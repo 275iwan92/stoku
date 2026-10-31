@@ -84,7 +84,7 @@ Unduh Stoku:
 git clone https://github.com/275iwan92/stoku.git
 ```
 
-Hasilnya dua folder berdampingan: `...\Herd\devlib` dan `...\Herdstoku`. Jangan ganti nama kedua folder itu.
+Hasilnya dua folder berdampingan: `...\Herd\devlib` dan `...\Herd\stoku`. Jangan ganti nama kedua folder itu.
 
 Masuk ke folder Stoku. Semua langkah berikut dijalankan dari sini:
 
