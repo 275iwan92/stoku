@@ -32,7 +32,7 @@ class HomeController extends Controller
         $below = Product::query()->belowReorderPoint()->withAvailable()->with('category', 'openOrder.creator', 'openOrder.supplier')->orderByRaw(Product::availableSql().' / products.reorder_point', [Item::usableFrom()])->get();
 
         return view('home', [
-            'modules' => Menu::layers($user),
+            'modules' => Menu::modules($user),
             'user' => ['name' => $user->name, 'email' => $user->email, 'role' => $user->roleLabel()],
             'open' => $request->query('open'),
             'fresh' => (bool) session('fresh'),
