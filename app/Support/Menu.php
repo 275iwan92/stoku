@@ -7,7 +7,7 @@ use App\Services\CountSchedule;
 
 /* REMARK
  * Tujuan       : Menu Layer Shell dari daftar modul (App\Support\Modules), disaring menurut akses pengguna (peran + Grup). Modul tanpa akses tidak tampil.
- * Output       : array $modules untuk x-dl::layer-shell (code item dipakai juga oleh ?open= dan data-open-tab).
+ * Output       : modules() = daftar induk datar (HP, tes); layers() = array $modules untuk x-dl::layer-shell desktop (Stok membungkus Transaksi + Laporan) (code item dipakai juga oleh ?open= dan data-open-tab).
  * Dipakai oleh : HomeController.
  * Status       : Aktif.
  */
@@ -35,6 +35,26 @@ final class Menu
         foreach (Modules::PARENTS as $code => [$label, $icon]) {
             if (isset($parents[$code])) {
                 $out[] = ['code' => $code, 'short' => $code, 'label' => $label, 'icon' => $icon, 'pin' => $code === 'SEC', 'children' => $parents[$code]];
+            }
+        }
+
+        return $out;
+    }
+
+    // Menu desktop: Transaksi dan Laporan jadi dua subkelompok di bawah satu induk "Stok" (Data Master, Stok, Keamanan). Kode modul dan hak akses tidak berubah; HP tetap memakai modules().
+    public static function layers(User $user): array
+    {
+        $stok = ['TRX', 'RPT'];
+        $parents = collect(self::modules($user))->keyBy('code');
+        $groups = collect($stok)->filter(fn ($c) => $parents->has($c))
+            ->map(fn ($c) => ['label' => $parents[$c]['label'], 'icon' => $parents[$c]['icon'], 'items' => $parents[$c]['children']])->values()->all();
+
+        $out = [];
+        foreach ($parents as $code => $p) {
+            if (! in_array($code, $stok)) {
+                $out[] = $p;
+            } elseif ($groups && ! collect($out)->contains('code', 'STK')) {
+                $out[] = ['code' => 'STK', 'short' => 'STK', 'label' => 'Stok', 'icon' => 'fa-solid fa-boxes-packing', 'children' => $groups];
             }
         }
 
