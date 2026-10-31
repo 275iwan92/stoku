@@ -14,7 +14,7 @@ Tempel seluruh teks ini di awal sesi baru, lalu baca juga `CLAUDE.md` bila perlu
 9. Tanya pemilik hanya bila benar-benar buntu; selebihnya ambil keputusan masuk akal, sebutkan asumsinya.
 
 ## 2. Lokasi, stack, akun
-- **Keadaan per 2026-10-31 (baca ini dulu):** folder kerja sekarang `C:\Users\iwanp\Herd\stoku` (sejajar `tmerp` dan `devlib`), situs http://stoku.test (Herd), database MySQL `stoku` (akun `stoku_usr`, kata sandi di `.env`). Folder `sstock` lama sudah dihapus isinya (data identik dicek lebih dulu; cadangan terakhir `C:\Users\iwanp\Backups\sstock-terakhir-20261031.sql`); folder kosongnya mungkin masih ada karena terkunci, boleh dihapus; database `sstock` dan akun `sstock_usr` sudah di-drop. Kode proyek, repo GitHub (https://github.com/275iwan92/sstock, privat, `main`), perintah `sstock:*`, `config/sstock.php` dan kelas CSS `sstock-*` TETAP bernama sstock (sengaja tidak diganti).
+- **Keadaan per 2026-10-31 (baca ini dulu):** folder kerja sekarang `C:\Users\iwanp\Herd\stoku` (sejajar `tmerp` dan `devlib`), situs http://stoku.test (Herd), database MySQL `stoku` (akun `stoku_usr`, kata sandi di `.env`). Folder `sstock` lama sudah dihapus isinya (data identik dicek lebih dulu; cadangan terakhir `C:\Users\iwanp\Backups\sstock-terakhir-20261031.sql`); folder kosongnya mungkin masih ada karena terkunci, boleh dihapus; database `sstock` dan akun `sstock_usr` sudah di-drop. Repo GitHub (https://github.com/275iwan92/stoku, privat, `main`) sudah diganti nama dari sstock pada 2026-10-31. Kode proyek, perintah `sstock:*`, `config/sstock.php` dan kelas CSS `sstock-*` TETAP bernama sstock (sengaja tidak diganti).
 - **Jays** = klon Stoku di `C:\Users\iwanp\Herd\jays` (http://jays.test, DB `jays`, akun `jays_usr`, APP_NAME=Jays), git TANPA remote supaya tidak mendorong ke repo sstock. Kode sama dengan Stoku saat dikloning; perubahan Stoku tidak otomatis ikut ke Jays. Akun uji Jays diubah langsung di database: `entry` jadi `admhr`, `supervisor` jadi `spv` (sandi dari pemilik; seeder tidak diubah, jadi "Segarkan data contoh" mengembalikan nama lama).
 - **Biznet** (duplikat UAT, 103.127.135.74, HTTP): `/stoku/` (DB `stoku`), `/jays/` (DB `jays`, klon checkout stoku tanpa remote, cookie `jays_session`, path sesi `/jays`) dan `/devlib/`; alamat `/` mengarah ke `/jays/` (jays dijadikan utama). Akses `plink` + kunci `.ppk`, MySQL lewat `sudo mysql`. Memperbarui jays: `git pull /var/www/stoku main` di `/var/www/jays`. Rincian deploy: lihat `docs/`.
 - Laravel 13.37, PHP 8.3 atau lebih baru (`composer.json` ^8.3), Vite + Tailwind 4, MySQL 8 (db `stoku`, user `stoku_usr`, dibuat oleh `php artisan sstock:install` dengan `DB_DATABASE` / `DB_USERNAME` di `.env`). Tes memakai SQLite in-memory. Folder berisi tautan `vendor/jo/devlib` ke `..\devlib` (junction): lepas dengan `cmd /c rmdir` sebelum menghapus folder proyek.
@@ -50,7 +50,7 @@ Tempel seluruh teks ini di awal sesi baru, lalu baca juga `CLAUDE.md` bila perlu
 
 ## 6. Menjalankan di mesin lain
 ```bash
-git clone https://github.com/275iwan92/sstock.git stoku   # taruh sejajar dengan ../devlib
+git clone https://github.com/275iwan92/stoku.git stoku   # taruh sejajar dengan ../devlib
 composer setup    # install, .env, key, buat DB + user MySQL, migrate, seed, build
 ```
 Daftarkan folder ke Herd (park/link) lalu buka http://stoku.test.

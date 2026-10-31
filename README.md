@@ -64,7 +64,7 @@ Perintah di bawah memakai PowerShell (Windows). Di macOS atau Linux, perintahnya
 
 Stoku memakai pustaka tampilan bernama DevLib. Pustaka ini ada di repositori terpisah. `composer.json` memanggilnya dari folder `../devlib`. Artinya folder `devlib` dan folder `sstock` harus **berdampingan** (satu folder induk yang sama).
 
-Kedua repositori di GitHub bersifat **privat**. Anda harus punya akun GitHub, dan pemilik (Jo) harus memberi Anda akses ke `275iwan92/sstock` dan `275iwan92/devlib`. Tanpa akses, perintah `git clone` akan gagal.
+Kedua repositori di GitHub bersifat **privat**. Anda harus punya akun GitHub, dan pemilik (Jo) harus memberi Anda akses ke `275iwan92/stoku` dan `275iwan92/devlib`. Tanpa akses, perintah `git clone` akan gagal.
 
 Pindah ke folder induk yang Anda pilih. Contoh (ganti dengan folder Anda):
 
@@ -81,7 +81,7 @@ git clone https://github.com/275iwan92/devlib.git
 Unduh Stoku:
 
 ```powershell
-git clone https://github.com/275iwan92/sstock.git
+git clone https://github.com/275iwan92/stoku.git
 ```
 
 Hasilnya dua folder berdampingan: `...\Herd\devlib` dan `...\Herd\sstock`. Jangan ganti nama kedua folder itu.
