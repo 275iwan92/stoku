@@ -5,6 +5,8 @@ description: Aturan kerja proyek Stoku (sstock, Laravel + DevLib). Muat sebelum 
 
 # Stoku (sstock) — aturan kerja
 
+> **FREEZE (2026-11-01):** Stoku DIBEKUKAN atas perintah pemilik. Sebelum mengubah apa pun di repo ini atau di Biznet `/var/www/stoku`, INGATKAN pemilik bahwa Stoku sedang freeze dan tunggu konfirmasi eksplisit. Lihat `FREEZE.txt`. Pengembangan berlanjut di Jays.
+
 Bahasa kerja dengan pemilik: Indonesia, ringkas. Daftar fitur, akun uji, dan hal yang belum dikerjakan ada di `HANDOVER.md`.
 
 ## Wajib

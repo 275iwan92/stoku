@@ -1,0 +1,8 @@
+STOKU DIBEKUKAN (FREEZE) sejak 2026-11-01, atas perintah pemilik (Iwan).
+
+Jangan ubah proyek ini (kode, tampilan, UG/TG, data contoh, konfigurasi) tanpa konfirmasi eksplisit pemilik
+bahwa memang Stoku yang dimaksud. Pengembangan berlanjut di Jays (C:\Users\iwanp\Herd\jays).
+
+Berlaku di: laptop (C:\Users\iwanp\Herd\stoku, stoku.test) dan Biznet (/var/www/stoku, /stoku/).
+Perbaikan darurat tetap boleh bila pemilik meminta setelah diingatkan bahwa Stoku sedang freeze.
+Mencabut freeze: hapus berkas ini dan catatan di .claude/skills/stoku/SKILL.md (pemilik yang memutuskan).
