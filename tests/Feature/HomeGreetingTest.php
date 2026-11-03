@@ -39,7 +39,7 @@ class HomeGreetingTest extends TestCase
 
     public function test_without_a_fallback_place_the_weather_card_is_hidden_and_with_one_it_carries_it(): void
     {
-        $this->assertMatchesRegularExpression('/data-dl-weather data-locate="1"\s+hidden/', $this->home()->getContent());
+        $this->assertMatchesRegularExpression('/data-dl-weather data-locate="1" data-ip-fallback="1"\s+hidden/', $this->home()->getContent());
 
         Constants::set('company.weather_city', 'Malang', 'company');
         Constants::set('company.weather_lat', '-7.98', 'company');
