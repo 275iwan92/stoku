@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             SupplierSeeder::class,
             ItemSeeder::class,
             OrganizationSeeder::class,
+            CompanySeeder::class,
             SampleTransactionSeeder::class,
         ]);
     }

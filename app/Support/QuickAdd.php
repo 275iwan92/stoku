@@ -35,7 +35,7 @@ final class QuickAdd
         }
 
         return array_filter([
-            'url' => route($route, absolute: false), 'title' => $title, 'icon' => $icon, 'note' => $note,
+            'url' => parse_url(route($route), PHP_URL_PATH), 'title' => $title, 'icon' => $icon, 'note' => $note,
             'fields' => array_map(fn ($f) => ['name' => $f[0], 'label' => $f[1], 'required' => $f[2], 'type' => $f[3], 'maxlength' => $f[4]], $fields),
         ]);
     }
