@@ -1,5 +1,5 @@
 {{-- REMARK
- Tujuan       : Bilah saring laporan (GET): periode dari-sampai, kolom tambahan lewat slot, tombol Apply. Hasil ada di query string sehingga laporan bisa di-refresh / dibagikan.
+ Tujuan       : Bilah saring laporan (GET): periode dari-sampai, kolom tambahan lewat slot, tombol Show. Hasil ada di query string sehingga laporan bisa di-refresh / dibagikan.
  Input        : from, to (Carbon); slot = field tambahan.
  Output       : x-dl::action-form method GET.
  Dipakai oleh : semua view reports.*.
@@ -13,6 +13,6 @@
         {{ $slot }}
     </x-dl::form.row>
     <x-dl::action-bar>
-        <x-dl::button type="submit" icon="fa-filter" label="Apply" size="sm" />
+        <x-dl::button type="submit" icon="fa-eye" label="Show" size="sm" />
     </x-dl::action-bar>
 </x-dl::action-form>
