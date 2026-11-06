@@ -25,12 +25,13 @@ class LocationRequest extends FormRequest
 
         return [
             'code' => ['required', 'string', 'max:50', Rule::unique('locations', 'code')->ignore($this->route('location'))],
+            'type' => ['nullable', Rule::in(array_keys(\App\Models\Location::TYPES))],
             'name' => ['required', 'string', 'max:100', ...($this->expectsJson() ? [Rule::unique('locations', 'name')] : [])],
         ];
     }
 
     protected function prepareForValidation(): void
     {
-        $this->merge(['code' => strtoupper(trim((string) $this->input('code')))]);
+        $this->merge(['code' => strtoupper(trim((string) $this->input('code'))), 'type' => $this->input('type') ?: null]);
     }
 }

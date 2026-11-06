@@ -67,7 +67,7 @@ final class Indonesian
         // Master Kategori dan Lokasi Penyimpanan, kedaluwarsa
         'Categories' => 'Kategori', 'Storage Locations' => 'Lokasi Penyimpanan', 'Storage Location' => 'Lokasi Penyimpanan', 'Category · ' => 'Kategori · ',
         'Code Prefix' => 'Awalan Kode', 'Category Name' => 'Nama Kategori', 'Exactly 3 letters or digits. Cannot be changed after saving.' => 'Tepat 3 huruf atau angka. Tidak bisa diubah setelah disimpan.',
-        'Location Code' => 'Kode Lokasi', 'Location Name' => 'Nama Lokasi', 'Unique, for example A1-01. Cannot be changed after saving.' => 'Unik, misalnya A1-01. Tidak bisa diubah setelah disimpan.',
+        'Location Code' => 'Kode Lokasi', 'Location Type' => 'Jenis Lokasi', 'Groups the location in the list (cabinet, closed warehouse, open warehouse, wide area).' => 'Mengelompokkan lokasi di daftar (lemari, gudang tertutup, gudang terbuka, area luas).', 'Location Name' => 'Nama Lokasi', 'Unique, for example A1-01. Cannot be changed after saving.' => 'Unik, misalnya A1-01. Tidak bisa diubah setelah disimpan.',
         'All locations' => 'Semua lokasi', 'All categories' => 'Semua kategori', 'Expiry Date' => 'Tanggal Kedaluwarsa', 'Expiry' => 'Kedaluwarsa',
         'Generated automatically: category prefix, running number, and the expiry year and month if the item expires.' => 'Dibuat otomatis: awalan kategori, nomor urut, dan tahun-bulan kedaluwarsa bila barang kedaluwarsa.',
         'Fill only for items that expire. The expiry year and month become part of the item code, so it cannot be changed after saving.' => 'Isi hanya untuk barang yang kedaluwarsa. Tahun dan bulannya menjadi bagian kode barang, jadi tidak bisa diubah setelah disimpan.',
