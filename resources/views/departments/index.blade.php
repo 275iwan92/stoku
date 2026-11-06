@@ -8,14 +8,15 @@
 --}}
 @extends('layout', ['title' => 'Departments'])
 @section('body')
+    @php $rows = collect($rows)->map(fn ($r) => $r + ['recipientsTone' => $r['recipients'] ? 'neutral' : 'warn', 'documentsTone' => $r['documents'] ? 'neutral' : 'warn'])->all(); @endphp
     @include('partials.flash')
     <x-dl::grid id="departments" :rows="$rows" actions="master" :new-url="route('departments.create')" :open-url="url('departments/{id}')" :toggle-url="url('departments/{id}/toggle')"
         search="Search code, name..."
         :phone-cards="['title' => 'name', 'sub' => 'code', 'meta' => ['recipients', 'documents']]"
         :columns="[
-            ['key' => 'name', 'label' => 'Department', 'type' => 'identity', 'code' => 'code', 'box' => true],
-            ['key' => 'recipients', 'label' => 'Recipients', 'type' => 'number'],
-            ['key' => 'documents', 'label' => 'Issuance Documents', 'type' => 'number'],
+            ['key' => 'name', 'label' => 'Department', 'type' => 'identity', 'code' => 'code', 'avatar' => false, 'box' => false],
+            ['key' => 'recipients', 'label' => 'Recipients', 'type' => 'badge', 'toneKey' => 'recipientsTone'],
+            ['key' => 'documents', 'label' => 'Issuance Documents', 'type' => 'badge', 'toneKey' => 'documentsTone'],
         ]"
         :stats="[['label' => 'All departments'], ['label' => 'Inactive', 'where' => ['active' => false], 'tone' => 'warn']]" />
 @endsection

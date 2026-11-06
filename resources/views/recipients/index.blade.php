@@ -13,7 +13,7 @@
         search="Search name, department..."
         :phone-cards="['title' => 'name', 'sub' => 'department', 'meta' => ['documents']]"
         :columns="[
-            ['key' => 'name', 'label' => 'Recipient', 'type' => 'identity', 'code' => 'department', 'box' => true],
+            ['key' => 'name', 'label' => 'Recipient', 'type' => 'identity', 'code' => 'department', 'box' => false],
             ['key' => 'documents', 'label' => 'Issuance Documents', 'type' => 'number'],
         ]"
         :stats="[['label' => 'All recipients'], ['label' => 'Inactive', 'where' => ['active' => false], 'tone' => 'warn']]" />
