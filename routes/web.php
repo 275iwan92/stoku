@@ -35,7 +35,7 @@ Route::post('ui', [HpController::class, 'setDevice'])->name('ui.set');
 // Dibuka lewat GET (muat ulang / ganti mode "situs desktop" peramban / markah setelah ganti tampilan) tidak lagi 405: kembali ke Beranda tanpa mengubah pilihan.
 Route::get('ui', fn () => redirect()->route('home'));
 
-// Ukur layar (x-dl::screen-info): publik, murni sisi klien, tanpa data server; dibuka dari HP untuk mengukur layar sungguhan.
+// Ukur layar (x-dl2::screen-info): publik, murni sisi klien, tanpa data server; dibuka dari HP untuk mengukur layar sungguhan.
 Route::view('ukur', 'ukur')->name('ukur');
 
 Route::middleware('guest')->group(function () {
@@ -66,7 +66,7 @@ Route::middleware(['auth', 'active', 'module'])->group(function () {
     // Cari Barang tampilan HP (modul ITM, dijaga awalan nama rute hp.find): kolom cari/pindai -> kartu barang -> stok per batch FEFO.
     Route::get('m/find', [HpController::class, 'find'])->name('hp.find');
     Route::get('m/find/{product}', [HpController::class, 'product'])->name('hp.find.show');
-    // Ping x-dl::idle-logout: permintaan ini memperpanjang sesi; ikut EnsureActive (akun nonaktif ditolak), tanpa kode modul.
+    // Ping x-dl2::idle-logout: permintaan ini memperpanjang sesi; ikut EnsureActive (akun nonaktif ditolak), tanpa kode modul.
     Route::get('session/ping', fn () => response()->noContent())->name('session.ping');
     // HELP: User's Guide (Indonesia) untuk semua yang login; Technical Guide (English) hanya Administrator (grup di bawah).
     Route::view('help', 'help.user-guide')->name('help.user-guide');

@@ -4,10 +4,10 @@ namespace App\Support;
 
 use App\Enums\StockDocumentType;
 use App\Models\StockDocument;
-use Devlib\PrintDoc\Document;
+use Devlib2\PrintDoc\Document;
 
 /* REMARK
- * Tujuan       : Cetakan dokumen stok (Saldo Awal, Penerimaan, Pengeluaran, Penyesuaian) memakai tata letak DevLib x-dl::print-doc. Setiap cetakan membawa MODE dokumen
+ * Tujuan       : Cetakan dokumen stok (Saldo Awal, Penerimaan, Pengeluaran, Penyesuaian) memakai tata letak DevLib x-dl2::print-doc. Setiap cetakan membawa MODE dokumen
  *                (DRAFT / CONFIRMED / CANCELLED, penyesuaian juga WAITING APPROVAL / APPROVED / REJECTED); yang belum / tidak sah diberi tanda air.
  * Sumber hulu  : stock_documents + stock_document_lines (+ items, supplier, pembuat / penyetuju).
  * Input        : StockDocument (load()).
@@ -45,6 +45,55 @@ final class StockDocumentPrint extends Document
             default => [$expiry + ['width' => 38]],
         };
         parent::__construct($data);
+    }
+
+    /**
+     * Props untuk x-dl2::print-document (DevLib 2 tidak punya penggambar server untuk objek Document v1): kop, pihak, kolom, baris, total, tanda tangan,
+     * mode dan tanda air diambil dari objek ini supaya isi cetakan sama dengan sebelumnya.
+     *
+     * @return array<string, mixed>
+     */
+    public function props(): array
+    {
+        $d = $this->data;
+        $text = function (array $c, $v): string {
+            if ($v === null || $v === '') {
+                return '';
+            }
+
+            return match ($c['type'] ?? 'text') {
+                'date' => \Devlib2\Locale::date($v),
+                'money' => \Devlib2\Locale::number($v, 2),
+                'int' => \Devlib2\Locale::number($v, 0),
+                default => (string) $v,
+            };
+        };
+        $cols = [['key' => 'name', 'label' => self::t('Item Name'), 'sub' => 'sub'], ['key' => 'qty', 'label' => self::t('Qty'), 'align' => 'r'], ['key' => 'unit', 'label' => self::t('Unit')]];
+        foreach ($this->columns() as $c) {
+            $cols[] = ['key' => $c['key'], 'label' => self::t($c['label']), 'align' => in_array($c['type'] ?? '', ['money', 'int'], true) ? 'r' : 'l'] + (in_array($c['key'], ['price', 'subtotal'], true) ? ['type' => 'money'] : []);
+        }
+        $rows = array_map(function (array $r) use ($cols, $text) {
+            $out = ['name' => $r['name'] ?? '', 'sub' => trim(($r['sub'] ?? '').(! empty($r['sub2']) ? ' · '.$r['sub2'] : '')), 'qty' => $this->qty($r['qty'] ?? null), 'unit' => $r['unit'] ?? ''];
+            foreach ($this->columns() as $c) {
+                $out[$c['key']] = in_array($c['key'], ['price', 'subtotal'], true) ? (float) ($r[$c['key']] ?? 0) : $text($c, $r[$c['key']] ?? null);
+            }
+
+            return $out;
+        }, $this->rows());
+        $parties = [[self::t($this->partyLabel), (string) ($d['party']['name'] ?? '')]];
+        foreach ($this->refs as $ref) {
+            if (filled($d[$ref['key']] ?? null)) {
+                $parties[] = [self::t($ref['label']), $text($ref, $d[$ref['key']])];
+            }
+        }
+        $notes = implode(' · ', array_map(fn ($n) => $n[0].': '.$n[1], $this->notes()));
+
+        return array_filter([
+            'title' => self::t($this->title), 'number' => (string) ($d['number'] ?? ''), 'date' => $d['date'] ?? null, 'status' => $this->statusLabel(),
+            'company' => $this->company() + ['address' => implode(', ', $this->company()['lines'] ?? [])], 'parties' => $parties, 'columns' => $cols, 'rows' => $rows,
+            'totals' => $this->priced ? ['of' => 'subtotal'] : null, 'signatures' => array_map(fn ($s) => ['label' => $s[0], 'name' => $s[2] ?? ''], $this->signatures()),
+            'paper' => $this->paper(), 'prices' => $this->priced, 'printedBy' => $d['printedBy'] ?? null, 'watermark' => $this->watermark(), 'footer' => $notes ?: null,
+        ], fn ($v) => $v !== null && $v !== '');
     }
 
     public static function load(StockDocument $doc, ?string $printedBy): self

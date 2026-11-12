@@ -8,11 +8,11 @@
 --}}
 @extends('layout', ['title' => 'Forgot password', 'bodyClass' => 'sstock-bare'])
 @section('body')
-    @if (\Devlib\Device::view(request()) === \Devlib\Device::PHONE)
-        <x-hp-wallpaper><main class="dl-plogin">@include('auth._forgot-password-box')</main></x-hp-wallpaper>
+    @if (\Devlib2\Device::view(request()) === \Devlib2\Device::PHONE)
+        <x-hp-wallpaper><main class="sstock-plogin">@include('auth._forgot-password-box')</main></x-hp-wallpaper>
     @else
-        <x-dl::frame bg="sstock" bg-order="random" box="right" color="light" widgets="brand@top-left, clock@top-right, quote@bottom-left" quotes="motivasi.txt">
+        <x-dl2::frame :image-list="\App\Support\FrameMedia::images('sstock')" bg-order="random" box="right" color="light" widgets="brand@top-left, clock@top-right, quote@bottom-left" :quote-list="\App\Support\FrameMedia::quotes('motivasi.txt')" :brand="config('devlib.brand.name')" :tagline="config('devlib.brand.tagline')">
             @include('auth._forgot-password-box')
-        </x-dl::frame>
+        </x-dl2::frame>
     @endif
 @endsection

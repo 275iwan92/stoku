@@ -6,13 +6,13 @@ use App\Models\Location;
 use App\Models\StockCount;
 use App\Models\StockCountLine;
 use App\Services\StockCounts;
-use Devlib\Locale;
+use Devlib2\Locale;
 
 /* REMARK
- * Tujuan       : Data cetakan Stok Opname untuk x-dl::print-sheet (A4): (1) LEMBAR HITUNG yang dipakai orang gudang dengan kertas dan alat tulis, dikelompokkan per Lokasi lalu kode,
+ * Tujuan       : Data cetakan Stok Opname untuk x-dl2::print-sheet (A4): (1) LEMBAR HITUNG yang dipakai orang gudang dengan kertas dan alat tulis, dikelompokkan per Lokasi lalu kode,
  *                kolom hasil / penghitung / catatan kosong, stok sistem hanya bila tidak buta; (2) BERITA ACARA (setelah Selesai; pratinjau saat Tinjau): ringkasan, tabel baris selisih beserta alasan, tiga kotak tanda tangan.
  * Sumber hulu  : StockCounts::ordered / summary, stock_count_lines (snapshot), locations.
- * Output       : array prop untuk x-dl::print-sheet (title, code, info, sections, signatures, note, landscape).
+ * Output       : array prop untuk x-dl2::print-sheet (title, code, info, sections, signatures, note, landscape).
  * Dipakai oleh : StockCountController@sheet / report (stock-counts/sheet, stock-counts/report).
  * Status       : Aktif.
  */
@@ -44,8 +44,8 @@ final class StockCountPrint
         foreach ($this->counts->ordered($count)->groupBy(fn (StockCountLine $l) => (string) ($l->item->location ?? '')) as $location => $lines) {
             $rows = $lines->values()->map(fn (StockCountLine $l, int $i) => [
                 'no' => $i + 1, 'code' => $l->item->code, 'name' => $l->item->name, 'batch' => $l->item->expiry_date ? Locale::d($l->item->expiry_date) : '—',
-                'location' => $location === '' ? '—' : $location, 'unit' => $l->item->unit, 'system' => $this->qty($l->system_qty), 'counted' => self::BLANK, 'counter' => self::BLANK, 'note' => self::BLANK,
-            ])->all();
+                'location' => $location === '' ? '—' : $location, 'unit' => $l->item->unit, 'counted' => self::BLANK, 'counter' => self::BLANK, 'note' => self::BLANK,
+            ] + ($count->blind ? [] : ['system' => $this->qty($l->system_qty)]))->all();   // hitung buta: stok sistem tidak ikut dikirim ke browser (DevLib 2 mengirim seluruh baris sebagai JSON)
             $sections[] = ['title' => $location === '' ? 'Tanpa lokasi' : 'Lokasi '.$location.(isset($names[$location]) ? ' · '.$names[$location] : ''), 'blocks' => [['type' => 'table', 'columns' => $columns, 'rows' => $rows]]];
         }
 

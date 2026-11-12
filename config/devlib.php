@@ -19,7 +19,7 @@ return [
     // Tombol Kembali selalu ke alamat grid-nya, bukan ke layar sebelumnya (setelah Simpan, "sebelumnya" = form isian: berisiko input ganda).
     'back_history' => false,
     'timezone' => env('APP_TIMEZONE', 'Asia/Jakarta'),
-    // Tahap aplikasi (Jo 2026-10-23): alpha | beta | rc | kosong (rilis). Tampil `ver 0.<jumlah commit> A` di judul logo (Devlib\AppVersion); nilai lain dianggap kosong.
+    // Tahap aplikasi (Jo 2026-10-23): alpha | beta | rc | kosong (rilis). Tampil `ver 0.<jumlah commit> A` di judul logo (Devlib2\AppVersion); nilai lain dianggap kosong.
     'stage' => env('APP_STAGE', 'alpha'),
     'timezone_label' => 'WIB',
 

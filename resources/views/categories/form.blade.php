@@ -26,6 +26,6 @@
                 <div class="dl2-col-12 dl2-col-md-4"><x-dl2::display :config="['label' => 'Items using it', 'value' => (string) $category->products_count]" /></div>
             @endunless
         </x-dl2::form-row>
-        <p class="dl-note">Rumus kode barang: <b>{{ $p }}-0001</b> (urutan berjalan per kategori, tanpa tanggal). Barang berkedaluwarsa punya satu batch per tanggal dengan kode <b>{{ $p }}-0001-260315</b> (kedaluwarsa 15 Maret 2026).</p>
+        <p class="dl2-note">Rumus kode barang: <b>{{ $p }}-0001</b> (urutan berjalan per kategori, tanpa tanggal). Barang berkedaluwarsa punya satu batch per tanggal dengan kode <b>{{ $p }}-0001-260315</b> (kedaluwarsa 15 Maret 2026).</p>
     </x-dl2::master-form>
 @endsection

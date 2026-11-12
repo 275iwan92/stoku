@@ -6,7 +6,7 @@ use App\Enums\StockDocumentType;
 use App\Models\Product;
 use App\Models\ReorderOrder;
 use App\Models\StockMovement;
-use Devlib\Engine\LeadTime;
+use Devlib2\Engine\LeadTime;
 
 /* REMARK
  * Tujuan       : Menyambung engine LeadTime DevLib ke Stoku: lead time per barang dari pesanan nyata (reorder_orders: tanggal pesan sampai tanggal masuk), dengan lead time manual barang (products.lead_time_days) sebagai cadangan.

@@ -7,12 +7,12 @@ use Illuminate\Validation\ValidationException;
 
 /* REMARK
  * Tujuan       : Data perusahaan untuk KOP SEMUA cetakan (dokumen stok, Lembar Hitung, Berita Acara, enam laporan): nama, nama PT / CV, alamat, telepon, e-mail, NPWP, logo, dan gaya kop.
- *                Satu-satunya sumber kop: kop() dipasang ke DevLib (Document::companyUsing) dan report() dikirim ke x-dl::report. Aplikasi tetap bernama STOKU (login, menu, judul); hanya kop cetakan yang berubah.
+ *                Satu-satunya sumber kop: kop() dipasang ke DevLib (Document::companyUsing) dan report() dikirim ke x-dl2::report. Aplikasi tetap bernama STOKU (login, menu, judul); hanya kop cetakan yang berubah.
  *                Data ada di tabel constants (company.name, legal_name, address, phone, email, npwp, logo, kop_style). Belum pernah diisi: nama = config devlib.company.name, gaya = logo + nama bila ada logo, selain itu nama saja.
  *                Logo: PNG / JPG / WebP (bukan SVG), diperiksa menurut ISI berkas, diubah ke PNG selebar paling 600 px dan disimpan sebagai storage/app/company/logo.png (nama tidak pernah dari pengguna); disajikan rute company.logo.
  *                Cuaca Beranda: Kota / Lintang / Bujur (company.weather_city, weather_lat, weather_lon) = tempat CADANGAN cuaca, dipakai bila lokasi perangkat tidak bisa dipakai (izin ditolak, situs belum HTTPS, timeout). Kosong = tanpa cadangan.
  * Output       : get(), save(), kop(), report(), logoPath(), logoUrl(), style(), weather().
- * Dipakai oleh : AppServiceProvider (Document::companyUsing), CompanyController, view laporan (x-dl::report), StockCountPrint dan StockDocumentPrint (lewat DevLib).
+ * Dipakai oleh : AppServiceProvider (Document::companyUsing), CompanyController, view laporan (x-dl2::report), StockCountPrint dan StockDocumentPrint (lewat DevLib).
  * Status       : Aktif.
  */
 final class Company
@@ -108,31 +108,49 @@ final class Company
         return [$address, $contact];
     }
 
-    /** Kop untuk Devlib\PrintDoc\Document::companyUsing (print-doc, print-sheet). */
+    /** Kop untuk Devlib2\PrintDoc\Document::companyUsing (print-doc, print-sheet). */
     public static function kop(): array
     {
         $c = self::get();
         [$address, $contact] = self::lines($c);
         $logo = self::logoUrl();
 
+        [$logo, $legal, $withAddress] = self::kopStyle($c, $logo);
+
         return [
             'name' => $c['name'], 'legal_name' => $c['legal_name'], 'style' => $c['kop_style'], 'initials' => self::initials($c['name']),
-            'logo' => $logo, 'logoBw' => $logo, 'lines' => array_slice(array_values(array_filter([...$address, $contact])), 0, 3), 'npwp' => $c['npwp'] !== '' ? $c['npwp'] : null,
+            'logo' => $logo, 'logoBw' => $logo, 'lines' => array_slice(array_values(array_filter([...$legal, ...($withAddress ? [...$address, $contact] : [])])), 0, 3), 'npwp' => $c['npwp'] !== '' ? $c['npwp'] : null,
         ];
     }
 
-    /** Kop untuk x-dl::report / print-out: membaca address dan contact (bukan lines). Tagline bawaan hanya selama perusahaan belum diisi. */
+    /** Kop untuk x-dl2::report / print-out: membaca address dan contact (bukan lines). Tagline bawaan hanya selama perusahaan belum diisi. */
     public static function report(): array
     {
         $c = self::get();
         [$address, $contact] = self::lines($c);
         $logo = self::logoUrl();
 
+        [$logo, $legal, $withAddress] = self::kopStyle($c, $logo);
+
         return [
             'name' => $c['name'], 'legal_name' => $c['legal_name'], 'style' => $c['kop_style'], 'initials' => self::initials($c['name']),
-            'logo' => $logo, 'logoBw' => $logo, 'address' => implode(', ', $address), 'contact' => $contact, 'npwp' => $c['npwp'] !== '' ? $c['npwp'] : null,
+            'logo' => $logo, 'logoBw' => $logo, 'address' => implode(', ', [...$legal, ...($withAddress ? $address : [])]), 'contact' => $withAddress ? $contact : '', 'npwp' => $c['npwp'] !== '' ? $c['npwp'] : null,
             'tagline' => $c['configured'] ? null : config('devlib.company.tagline'),
         ];
+    }
+
+    /**
+     * Gaya kop (name | logo_name | logo_name_address): DevLib 2 menggambar apa yang diberi, jadi gayanya diterapkan di sini (v1 menyaringnya di komponen).
+     * Nama badan hukum dicetak bila beda dari nama perusahaan (tanpa memandang huruf besar / spasi ganda).
+     *
+     * @return array{0: ?string, 1: array<int, string>, 2: bool} [logo, baris badan hukum, dengan alamat dan kontak]
+     */
+    private static function kopStyle(array $c, ?string $logo): array
+    {
+        $norm = fn (string $v) => mb_strtolower(trim(preg_replace('/\s+/u', ' ', $v)));
+        $legal = trim($c['legal_name']) !== '' && $norm($c['legal_name']) !== $norm($c['name']) ? [trim($c['legal_name'])] : [];
+
+        return [$c['kop_style'] === 'name' ? null : $logo, $legal, $c['kop_style'] === 'logo_name_address'];
     }
 
     public static function initials(string $name): string

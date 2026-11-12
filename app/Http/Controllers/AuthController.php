@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Support\Wallpapers;
-use Devlib\Device;
+use Devlib2\Device;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +30,10 @@ class AuthController extends Controller
 
     public function login(Request $request): RedirectResponse
     {
+        // DevLib 2 login-box / phone-login menamai kolom login "username"; aplikasi tetap membaca "login".
+        if (! $request->filled('login') && $request->filled('username')) {
+            $request->merge(['login' => $request->input('username')]);
+        }
         $data = $request->validate(['login' => ['required', 'string'], 'password' => ['required', 'string']], [
             'login.required' => 'Isi username atau e-mail Anda.',
             'password.required' => 'Isi password Anda.',

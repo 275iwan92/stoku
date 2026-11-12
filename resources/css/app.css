@@ -2,8 +2,6 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source '../../../devlib/src';
-@source '../../../devlib/resources';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -13,49 +11,43 @@
 /* REMARK
  * Tujuan       : Warna tombol panel form per aksi (merah untuk Deactivate / Delete / Reject / Cancel, hijau untuk Activate / Confirm / Approve, biru lembut untuk New, kuning untuk Hold)
  *                dan nama item berukuran besar. Khusus SStock: tidak mengubah DevLib, jadi tidak memengaruhi aplikasi lain.
- * Sumber hulu  : atribut data-f-act tombol panel (Devlib\Components\Form), token warna DevLib (--dl-danger, --dl-success, --dl-accent-soft).
+ * Sumber hulu  : atribut data-f-act tombol panel (Devlib\Components\Form), token warna DevLib (--dl2-danger, --dl2-success, --ss-accent-soft).
  * Dipakai oleh : semua form panel SStock; kelas sstock-name di form Item.
  */
-.dl-form__panel .dl-btn[data-f-act="deactivate"],
-.dl-form__panel .dl-btn[data-f-act="delete"],
-.dl-form__panel .dl-btn[data-f-act="reject"],
-.dl-form__panel .dl-btn[data-f-act="cancel"] { background: var(--dl-danger); color: #fff; border-color: transparent; }
+.dl2-btn[data-dl2-form-action="deactivate"],
+.dl2-btn[data-dl2-form-action="delete"],
+.dl2-btn[data-dl2-form-action="reject"],
+.dl2-btn[data-dl2-form-action="cancel"] { background: var(--dl2-danger); color: #fff; border-color: transparent; }
 
-.dl-form__panel .dl-btn[data-f-act="activate"],
-.dl-form__panel .dl-btn[data-f-act="confirm"],
-.dl-form__panel .dl-btn[data-f-act="approve"] { background: var(--dl-success); color: #fff; border-color: transparent; }
+.dl2-btn[data-dl2-form-action="activate"],
+.dl2-btn[data-dl2-form-action="confirm"],
+.dl2-btn[data-dl2-form-action="approve"] { background: var(--dl2-success); color: #fff; border-color: transparent; }
 
-.dl-form__panel .dl-btn[data-f-act="new"],
-.dl-form__panel .dl-btn[data-f-act="duplicate"] { background: var(--dl-accent-soft); color: var(--dl-accent); border-color: transparent; }
+.dl2-btn[data-dl2-form-action="new"],
+.dl2-btn[data-dl2-form-action="duplicate"] { background: var(--ss-accent-soft); color: var(--dl2-primary); border-color: transparent; }
 
-.dl-form__panel .dl-btn[data-f-act="hold"] { background: #f59e0b; color: #1f2937; border-color: transparent; }
+.dl2-btn[data-dl2-form-action="hold"] { background: #f59e0b; color: #1f2937; border-color: transparent; }
 
-.dl-form__panel .dl-btn[data-f-act="deactivate"]:hover,
-.dl-form__panel .dl-btn[data-f-act="delete"]:hover,
-.dl-form__panel .dl-btn[data-f-act="reject"]:hover,
-.dl-form__panel .dl-btn[data-f-act="cancel"]:hover,
-.dl-form__panel .dl-btn[data-f-act="activate"]:hover,
-.dl-form__panel .dl-btn[data-f-act="confirm"]:hover,
-.dl-form__panel .dl-btn[data-f-act="approve"]:hover,
-.dl-form__panel .dl-btn[data-f-act="hold"]:hover { filter: brightness(1.08); }
+.dl2-btn[data-dl2-form-action="deactivate"]:hover,
+.dl2-btn[data-dl2-form-action="delete"]:hover,
+.dl2-btn[data-dl2-form-action="reject"]:hover,
+.dl2-btn[data-dl2-form-action="cancel"]:hover,
+.dl2-btn[data-dl2-form-action="activate"]:hover,
+.dl2-btn[data-dl2-form-action="confirm"]:hover,
+.dl2-btn[data-dl2-form-action="approve"]:hover,
+.dl2-btn[data-dl2-form-action="hold"]:hover { filter: brightness(1.08); }
 
-.sstock-name .dl-input { font-size: 1.5rem; font-weight: 600; height: 3rem; }
+.sstock-name .dl2-input { font-size: 1.5rem; font-weight: 600; height: 3rem; }
 
-/* Logo Stoku (SVG berwarna) menggantikan kotak gradasi bawaan DevLib di semua tempat lencana logo tampil (sidebar, kotak login, pojok login). */
-.dl-logo-badge { background: url('/media/brand/stoku.svg') center / contain no-repeat; }
-.dl-logo-badge > img { width: 100%; height: 100%; object-fit: contain; display: block; background: transparent; border-radius: 0; }
 
 /* Layar di dalam tab Layer Shell diberi jarak kiri / kanan / bawah supaya tidak menempel ke menu. Login dan layar utama (shell) memakai kelas sstock-bare: tanpa jarak. */
-body.dl-body:not(.sstock-bare) { padding: 12px 16px 16px; }
-/* DevLib mengunci body.dl-body (height 100vh, overflow hidden) karena layar DevLib biasanya punya wadah gulir sendiri; daftar panjang (Barang, Satuan, Lokasi, Log Aktivitas, ...) tidak, jadi body-nya yang menggulir:
-   semua layar isi tab (bukan shell / login / panduan = sstock-bare) kecuali formulir (.dl-form menggulir sendiri dengan judul + tombol Simpan tetap di atas), dan layar desktop di dalam kerangka HP (body.dl-phone-shelled), formulir pun. */
-body.dl-body:not(.sstock-bare):not(:has(.dl-form)),
-body.dl-body.dl-phone-shelled { height: auto; min-height: 100vh; overflow-y: auto; }
-/* Dibuka di kerangka HP: judul sudah ada di baris judul kerangka. */
-body.dl-phone-shelled .sstock-pagetitle { display: none; }
+body.dl2-body:not(.sstock-bare) { padding: 12px 16px 16px; }
+/* Beranda (shell) memenuhi tinggi layar; semua layar lain digulir oleh body. */
+html, body.sstock-bare { height: 100%; }
+body.sstock-bare .dl2-shell { height: 100vh; }
+/* Dibuka di kerangka HP (iframe): judul sudah ada di baris judul kerangka. */
+body.sstock-framed .sstock-pagetitle { display: none; }
 
-/* Logo tanpa kotak di belakangnya tampil lebih besar supaya kubusnya jelas. */
-.dl-logo-badge--sm { width: 46px; height: 46px; }
 
 /* Kotak ringkasan di opening screen yang bisa diklik (membuka menu terkait). */
 .sstock-link { cursor: pointer; transition: transform .12s, box-shadow .12s; }
@@ -64,64 +56,64 @@ body.dl-phone-shelled .sstock-pagetitle { display: none; }
 /* Opening screen: peringatan pesan ulang (tabel ringkas, huruf besar) di kiri, grafik nilai stok di kanan; menumpuk di layar sempit. */
 /* Sapaan Beranda: satu baris sapaan + tanggal dan jam kecil, cuaca di ruang kosong kanan (desktop) atau chip kecil di samping tanggal (HP). */
 .sstock-hello { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 12px; }
-.sstock-hello .dl-greeting { font-size: 22px; line-height: 1.2; color: var(--dl-ink-strong); text-shadow: none; }
+.sstock-hello .dl2-greeting { font-size: 22px; line-height: 1.2; color: var(--dl2-ink); text-shadow: none; }
 .sstock-hello__meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .sstock-hello--hp { flex-direction: column; align-items: flex-start; gap: 4px; margin: 2px 0 14px; }
-.sstock-hello--hp .dl-greeting { font-size: 20px; }
+.sstock-hello--hp .dl2-greeting { font-size: 20px; }
 .sstock-split { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; align-items: start; margin-top: 12px; }
 .sstock-split > :only-child { grid-column: 1 / -1; }
-.sstock-box { background: var(--dl-surface); border: 1px solid var(--dl-border); border-radius: var(--dl-radius-md, 12px); padding: 14px 16px; }
+.sstock-box { background: var(--dl2-surface); border: 1px solid var(--dl2-border); border-radius: var(--dl2-radius, 12px); padding: 14px 16px; }
 .sstock-box { container-type: inline-size; }
-.sstock-box .dl-chart { border: 0; box-shadow: none; padding: 0; background: transparent; }
-@container (max-width: 560px) { .sstock-box .dl-chart svg { max-height: 240px; } .sstock-box-nav strong { font-size: .9rem; } }
+.sstock-box .dl2-chart { border: 0; box-shadow: none; padding: 0; background: transparent; }
+@container (max-width: 560px) { .sstock-box .dl2-chart svg { max-height: 240px; } .sstock-box-nav strong { font-size: .9rem; } }
 .sstock-box-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.sstock-reorder .dl-table td, .sstock-reorder .dl-table th { font-size: 1.05rem; padding: 12px 14px; }
-.sstock-reorder .dl-table th { font-size: .85rem; }
-@media (max-width: 1100px) { .sstock-split { grid-template-columns: 1fr; } .sstock-box .dl-chart svg { max-height: 240px; } }
-.sstock-quickadd__err { color: var(--dl-danger, #c0392b); font-size: .85rem; margin: 6px 0 0; }
+.sstock-reorder .dl2-table td, .sstock-reorder .dl2-table th { font-size: 1.05rem; padding: 12px 14px; }
+.sstock-reorder .dl2-table th { font-size: .85rem; }
+@media (max-width: 1100px) { .sstock-split { grid-template-columns: 1fr; } .sstock-box .dl2-chart svg { max-height: 240px; } }
+.sstock-quickadd__err { color: var(--dl2-danger, #c0392b); font-size: .85rem; margin: 6px 0 0; }
 
 /* REMARK
  * Tujuan       : Tampilan halaman Technical Guide (Help): daftar isi di kiri, isi di kanan, kotak alur, tabel, lencana status. Khusus SStock.
- * Sumber hulu  : token warna DevLib (--dl-surface, --dl-border, --dl-accent, --dl-accent-soft, --dl-danger, --dl-success).
+ * Sumber hulu  : token warna DevLib (--dl2-surface, --dl2-border, --dl2-primary, --ss-accent-soft, --dl2-danger, --dl2-success).
  * Dipakai oleh : resources/views/help/technical-guide.blade.php.
  */
 .sstock-guide { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; max-width: 1180px; margin: 0 auto; padding: 20px; line-height: 1.6; }
 .sstock-guide .g-toc { position: sticky; top: 16px; align-self: start; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
 .sstock-guide .g-toc a { color: inherit; opacity: .75; text-decoration: none; }
-.sstock-guide .g-toc a:hover { opacity: 1; color: var(--dl-accent); }
+.sstock-guide .g-toc a:hover { opacity: 1; color: var(--dl2-primary); }
 .sstock-guide h1 { font-size: 26px; font-weight: 700; margin: 0 0 4px; }
-.sstock-guide h2 { font-size: 19px; font-weight: 700; margin: 34px 0 10px; padding-top: 10px; border-top: 1px solid var(--dl-border); scroll-margin-top: 12px; }
+.sstock-guide h2 { font-size: 19px; font-weight: 700; margin: 34px 0 10px; padding-top: 10px; border-top: 1px solid var(--dl2-border); scroll-margin-top: 12px; }
 .sstock-guide h3 { font-size: 15px; font-weight: 700; margin: 20px 0 8px; }
 .sstock-guide p, .sstock-guide li { font-size: 14px; }
 .sstock-guide .g-lead { opacity: .8; margin-bottom: 8px; }
 .sstock-guide .g-note { font-size: 13px; opacity: .8; margin-top: 10px; }
-.sstock-guide code { font-size: 12.5px; background: var(--dl-accent-soft); padding: 1px 5px; border-radius: 4px; }
-.sstock-guide .g-code { background: var(--dl-surface); border: 1px solid var(--dl-border); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; overflow-x: auto; }
+.sstock-guide code { font-size: 12.5px; background: var(--ss-accent-soft); padding: 1px 5px; border-radius: 4px; }
+.sstock-guide .g-code { background: var(--dl2-surface); border: 1px solid var(--dl2-border); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; overflow-x: auto; }
 .sstock-guide .g-list, .sstock-guide .g-steps { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 .sstock-guide .g-list { list-style: disc; }
 .sstock-guide .g-steps { list-style: decimal; }
 .sstock-guide .g-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
-.sstock-guide .g-table th, .sstock-guide .g-table td { text-align: left; vertical-align: top; padding: 7px 10px; border: 1px solid var(--dl-border); }
-.sstock-guide .g-table th { background: var(--dl-surface); font-weight: 700; }
+.sstock-guide .g-table th, .sstock-guide .g-table td { text-align: left; vertical-align: top; padding: 7px 10px; border: 1px solid var(--dl2-border); }
+.sstock-guide .g-table th { background: var(--dl2-surface); font-weight: 700; }
 .sstock-guide .g-st { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-.sstock-guide .g-green { background: color-mix(in srgb, var(--dl-success) 18%, transparent); color: color-mix(in srgb, var(--dl-success) 55%, var(--dl-ink-strong)); }
-.sstock-guide .g-red { background: color-mix(in srgb, var(--dl-danger) 16%, transparent); color: color-mix(in srgb, var(--dl-danger) 55%, var(--dl-ink-strong)); }
-.sstock-guide .g-yellow { background: color-mix(in srgb, #f59e0b 22%, transparent); color: color-mix(in srgb, #f59e0b 45%, var(--dl-ink-strong)); }
-.sstock-guide .g-grey { background: var(--dl-surface); border: 1px solid var(--dl-border); }
-.sstock-guide .g-flow { display: flex; flex-direction: column; align-items: stretch; gap: 0; background: var(--dl-surface); border: 1px solid var(--dl-border); border-radius: 12px; padding: 16px; }
+.sstock-guide .g-green { background: color-mix(in srgb, var(--dl2-success) 18%, transparent); color: color-mix(in srgb, var(--dl2-success) 55%, var(--dl2-ink)); }
+.sstock-guide .g-red { background: color-mix(in srgb, var(--dl2-danger) 16%, transparent); color: color-mix(in srgb, var(--dl2-danger) 55%, var(--dl2-ink)); }
+.sstock-guide .g-yellow { background: color-mix(in srgb, #f59e0b 22%, transparent); color: color-mix(in srgb, #f59e0b 45%, var(--dl2-ink)); }
+.sstock-guide .g-grey { background: var(--dl2-surface); border: 1px solid var(--dl2-border); }
+.sstock-guide .g-flow { display: flex; flex-direction: column; align-items: stretch; gap: 0; background: var(--dl2-surface); border: 1px solid var(--dl2-border); border-radius: 12px; padding: 16px; }
 .sstock-guide .g-row { display: grid; gap: 10px; }
 .sstock-guide .g-row-2 { grid-template-columns: repeat(2, 1fr); }
 .sstock-guide .g-row-3 { grid-template-columns: repeat(3, 1fr); }
 .sstock-guide .g-row-5 { grid-template-columns: repeat(5, 1fr); }
-.sstock-guide .g-group { border: 1px dashed var(--dl-border); border-radius: 12px; padding: 10px; }
+.sstock-guide .g-group { border: 1px dashed var(--dl2-border); border-radius: 12px; padding: 10px; }
 .sstock-guide .g-cap { font-size: 12px; opacity: .7; margin-bottom: 8px; }
 .sstock-guide .g-arrow { text-align: center; font-size: 18px; opacity: .6; line-height: 1.6; }
-.sstock-guide .g-box { border: 1px solid var(--dl-border); border-radius: 8px; padding: 9px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+.sstock-guide .g-box { border: 1px solid var(--dl2-border); border-radius: 8px; padding: 9px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
 .sstock-guide .g-box b { font-size: 14px; }
 .sstock-guide .g-box small { font-size: 12px; opacity: .8; }
-.sstock-guide .g-gray { background: color-mix(in srgb, var(--dl-border) 35%, transparent); }
+.sstock-guide .g-gray { background: color-mix(in srgb, var(--dl2-border) 35%, transparent); }
 .sstock-guide .g-teal { background: color-mix(in srgb, #14b8a6 16%, transparent); border-color: #14b8a6; }
-.sstock-guide .g-purple { background: var(--dl-accent-soft); border-color: var(--dl-accent); }
+.sstock-guide .g-purple { background: var(--ss-accent-soft); border-color: var(--dl2-primary); }
 @media (max-width: 860px) {
     .sstock-guide { grid-template-columns: minmax(0, 1fr); }
     .sstock-guide .g-table { display: block; overflow-x: auto; }
@@ -133,142 +125,182 @@ body.dl-phone-shelled .sstock-pagetitle { display: none; }
     .sstock-guide .g-row-3, .sstock-guide .g-row-5 { grid-template-columns: 1fr 1fr; }
 }
 
-/* DevLib mengunci body.dl-body (height 100vh, overflow hidden) karena layar DevLib punya wadah scroll sendiri; halaman HELP (UG dan TG) tidak, jadi body-nya yang menggulir. */
-body.dl-body:has(.sstock-guide) { overflow-y: auto; }
 
 /* HELP: tab Panduan Pengguna / Technical Guide, label peran, kotak tip dan peringatan (UG). */
-.g-tabs { display: flex; gap: 6px; max-width: 1180px; margin: 0 auto; padding: 14px 20px 0; border-bottom: 1px solid var(--dl-border); }
+.g-tabs { display: flex; gap: 6px; max-width: 1180px; margin: 0 auto; padding: 14px 20px 0; border-bottom: 1px solid var(--dl2-border); }
 .g-tabs a { padding: 8px 16px; font-size: 14px; font-weight: 600; text-decoration: none; color: inherit; opacity: .7; border-bottom: 3px solid transparent; margin-bottom: -1px; }
 .g-tabs a:hover { opacity: 1; }
-.g-tabs a.is-on { opacity: 1; color: var(--dl-accent-ink); border-bottom-color: var(--dl-accent); }
-.sstock-guide .g-role { display: inline-block; padding: 0 8px; border-radius: 999px; font-size: 11.5px; font-weight: 700; background: color-mix(in srgb, #f59e0b 22%, transparent); color: color-mix(in srgb, #f59e0b 45%, var(--dl-ink-strong)); white-space: nowrap; }
-.sstock-guide .g-tip, .sstock-guide .g-warn { border-radius: 8px; padding: 9px 12px; margin: 10px 0; font-size: 13.5px; border: 1px solid var(--dl-border); }
-.sstock-guide .g-tip { background: var(--dl-accent-soft); border-color: var(--dl-accent); }
+.g-tabs a.is-on { opacity: 1; color: var(--dl2-primary); border-bottom-color: var(--dl2-primary); }
+.sstock-guide .g-role { display: inline-block; padding: 0 8px; border-radius: 999px; font-size: 11.5px; font-weight: 700; background: color-mix(in srgb, #f59e0b 22%, transparent); color: color-mix(in srgb, #f59e0b 45%, var(--dl2-ink)); white-space: nowrap; }
+.sstock-guide .g-tip, .sstock-guide .g-warn { border-radius: 8px; padding: 9px 12px; margin: 10px 0; font-size: 13.5px; border: 1px solid var(--dl2-border); }
+.sstock-guide .g-tip { background: var(--ss-accent-soft); border-color: var(--dl2-primary); }
 .sstock-guide .g-warn { background: color-mix(in srgb, #f59e0b 14%, transparent); border-color: #f59e0b; }
-.sstock-guide .g-btn { display: inline-block; padding: 0 7px; border: 1px solid var(--dl-border); border-radius: 5px; background: var(--dl-surface); font-weight: 600; font-size: 12.5px; white-space: nowrap; }
+.sstock-guide .g-btn { display: inline-block; padding: 0 7px; border: 1px solid var(--dl2-border); border-radius: 5px; background: var(--dl2-surface); font-weight: 600; font-size: 12.5px; white-space: nowrap; }
 .sstock-guide .g-toc .g-toc-sub { padding-left: 12px; font-size: 12.5px; }
 
 /* HELP: diagram SVG inline (resources/help/diagrams, disisipkan lewat help/diagram.blade.php). Warna dari token tema, jadi terbaca terang dan gelap. */
-.sstock-guide .g-fig { margin: 14px 0; padding: 12px; border: 1px solid var(--dl-border); border-radius: 12px; background: var(--dl-surface); }
+.sstock-guide .g-fig { margin: 14px 0; padding: 12px; border: 1px solid var(--dl2-border); border-radius: 12px; background: var(--dl2-surface); }
 .sstock-guide .g-fig figcaption { font-size: 12.5px; opacity: .75; margin-top: 6px; }
 .g-svg { display: block; width: 100%; max-width: 100%; height: auto; }
-.g-svg .t { fill: var(--dl-ink, currentColor); font: 13px system-ui, sans-serif; }
+.g-svg .t { fill: var(--dl2-ink, currentColor); font: 13px system-ui, sans-serif; }
 .g-svg .t.b { font-weight: 700; }
 .g-svg .t.s { font-size: 11.5px; opacity: .78; }
 .g-svg .t.m { font: 11px ui-monospace, Consolas, monospace; }
-.g-svg .n { fill: var(--dl-surface); stroke: var(--dl-border-hover, var(--dl-border)); stroke-width: 1.5; }
-.g-svg .n-in, .g-svg .n-purple { fill: var(--dl-accent-soft); stroke: var(--dl-accent); }
-.g-svg .n-teal { fill: color-mix(in srgb, #14b8a6 16%, var(--dl-surface)); stroke: #14b8a6; }
-.g-svg .n-ok { fill: color-mix(in srgb, var(--dl-success) 16%, var(--dl-surface)); stroke: var(--dl-success); }
-.g-svg .n-warn { fill: color-mix(in srgb, #f59e0b 20%, var(--dl-surface)); stroke: #f59e0b; }
-.g-svg .n-bad { fill: color-mix(in srgb, var(--dl-danger) 14%, var(--dl-surface)); stroke: var(--dl-danger); }
-.g-svg .n-gray { fill: color-mix(in srgb, var(--dl-border) 35%, var(--dl-surface)); }
-.g-svg .n-rule { stroke: var(--dl-border-hover, var(--dl-border)); stroke-width: 1; }
-.g-svg .g { fill: none; stroke: var(--dl-border-hover, var(--dl-border)); stroke-width: 1.2; stroke-dasharray: 6 5; }
-.g-svg .e { fill: none; stroke: var(--dl-ink, currentColor); stroke-width: 1.6; opacity: .7; }
+.g-svg .n { fill: var(--dl2-surface); stroke: var(--dl2-border, var(--dl2-border)); stroke-width: 1.5; }
+.g-svg .n-in, .g-svg .n-purple { fill: var(--ss-accent-soft); stroke: var(--dl2-primary); }
+.g-svg .n-teal { fill: color-mix(in srgb, #14b8a6 16%, var(--dl2-surface)); stroke: #14b8a6; }
+.g-svg .n-ok { fill: color-mix(in srgb, var(--dl2-success) 16%, var(--dl2-surface)); stroke: var(--dl2-success); }
+.g-svg .n-warn { fill: color-mix(in srgb, #f59e0b 20%, var(--dl2-surface)); stroke: #f59e0b; }
+.g-svg .n-bad { fill: color-mix(in srgb, var(--dl2-danger) 14%, var(--dl2-surface)); stroke: var(--dl2-danger); }
+.g-svg .n-gray { fill: color-mix(in srgb, var(--dl2-border) 35%, var(--dl2-surface)); }
+.g-svg .n-rule { stroke: var(--dl2-border, var(--dl2-border)); stroke-width: 1; }
+.g-svg .g { fill: none; stroke: var(--dl2-border, var(--dl2-border)); stroke-width: 1.2; stroke-dasharray: 6 5; }
+.g-svg .e { fill: none; stroke: var(--dl2-ink, currentColor); stroke-width: 1.6; opacity: .7; }
 .g-svg .e.dash { stroke-dasharray: 6 4; }
-.g-svg .mk { fill: var(--dl-ink, currentColor); opacity: .8; }
-.g-svg .el { fill: var(--dl-ink, currentColor); font: 600 11.5px system-ui, sans-serif; paint-order: stroke; stroke: var(--dl-surface); stroke-width: 4px; stroke-linejoin: round; }
+.g-svg .mk { fill: var(--dl2-ink, currentColor); opacity: .8; }
+.g-svg .el { fill: var(--dl2-ink, currentColor); font: 600 11.5px system-ui, sans-serif; paint-order: stroke; stroke: var(--dl2-surface); stroke-width: 4px; stroke-linejoin: round; }
 
-/* Stok Opname: Lembar Hitung (x-dl::print-sheet) memakai sel kosong untuk tulisan tangan; tinggi baris diberi agar cukup ditulisi pena. */
-.dl-psheet__tbl td.sstock-write { height: 9mm; }
+/* Stok Opname: Lembar Hitung (x-dl2::print-sheet) memakai sel kosong untuk tulisan tangan; tinggi baris diberi agar cukup ditulisi pena. */
+.dl2-psheet-tbl td.sstock-write { height: 9mm; }
 
 /* REMARK
  * Tujuan       : Tampilan HP Stoku (smartphone potret): kartu Beranda / daftar modul dan layar Hitung Opname satu barang per kartu. Hanya token DevLib; sasaran sentuh >= 44px, isian 16px ke atas.
- * Sumber hulu  : x-dl::phone-shell (DevLib), token --dl-*.
+ * Sumber hulu  : x-dl2::phone-shell (DevLib), token --dl2-*.
  * Dipakai oleh : resources/views/hp/*.
  */
 
 /* Hitung Opname HP */
 .sstock-hpc { display: flex; flex-direction: column; min-height: 100%; }
 .sstock-hpc > [data-single]:not([hidden]) { flex: 1; display: flex; flex-direction: column; }
-.sstock-hpc__bar { position: sticky; top: -12px; z-index: 5; margin: -12px -12px 12px; padding: 10px 12px 8px; background: var(--dl-bg); border-bottom: 1px solid var(--dl-border); }
+.sstock-hpc__bar { position: sticky; top: -12px; z-index: 5; margin: -12px -12px 12px; padding: 10px 12px 8px; background: var(--dl2-bg); border-bottom: 1px solid var(--dl2-border); }
 .sstock-hpc__prog { display: flex; align-items: center; gap: 12px; font-size: 15px; }
 .sstock-hpc__prog strong { flex: none; }
 .sstock-hpc__prog span { flex: 1; }
-.sstock-hpc__link { min-height: 44px; padding: 0 6px; border: 0; background: none; color: var(--dl-accent); font: inherit; font-weight: 700; cursor: pointer; }
-.sstock-hpc__meter { height: 6px; border-radius: 3px; background: var(--dl-chip); overflow: hidden; }
-.sstock-hpc__meter i { display: block; height: 100%; width: 0; background: var(--dl-success); transition: width .2s; }
+.sstock-hpc__link { min-height: 44px; padding: 0 6px; border: 0; background: none; color: var(--dl2-primary); font: inherit; font-weight: 700; cursor: pointer; }
+.sstock-hpc__meter { height: 6px; border-radius: 3px; background: var(--dl2-surface-2); overflow: hidden; }
+.sstock-hpc__meter i { display: block; height: 100%; width: 0; background: var(--dl2-success); transition: width .2s; }
 .sstock-hpc__save { display: flex; align-items: center; gap: 8px; margin: 6px 0 0; font-size: 13px; font-weight: 600; }
-.sstock-hpc__save[data-kind="ok"] { color: var(--dl-success); }
-.sstock-hpc__save[data-kind="dirty"], .sstock-hpc__save[data-kind="saving"] { color: var(--dl-ink); }
-.sstock-hpc__save[data-kind="fail"] { color: var(--dl-danger); }
+.sstock-hpc__save[data-kind="ok"] { color: var(--dl2-success); }
+.sstock-hpc__save[data-kind="dirty"], .sstock-hpc__save[data-kind="saving"] { color: var(--dl2-ink); }
+.sstock-hpc__save[data-kind="fail"] { color: var(--dl2-danger); }
 .sstock-hpc__find { position: relative; margin-bottom: 12px; }
-.sstock-hpc__search, .sstock-hpc__field, .sstock-hpc__qty { width: 100%; box-sizing: border-box; border: 1.5px solid var(--dl-f-line); border-radius: var(--dl-radius-md, 10px); background: var(--dl-surface); color: var(--dl-f-ink); font: inherit; }
+.sstock-hpc__search, .sstock-hpc__field, .sstock-hpc__qty { width: 100%; box-sizing: border-box; border: 1.5px solid var(--dl2-border); border-radius: var(--dl2-radius, 10px); background: var(--dl2-surface); color: var(--dl2-ink); font: inherit; }
 .sstock-hpc__search, .sstock-hpc__field { min-height: 48px; padding: 0 12px; font-size: 16px; }
-.sstock-hpc__search:focus, .sstock-hpc__field:focus, .sstock-hpc__qty:focus { outline: 2px solid var(--dl-accent); outline-offset: 1px; }
+.sstock-hpc__search:focus, .sstock-hpc__field:focus, .sstock-hpc__qty:focus { outline: 2px solid var(--dl2-primary); outline-offset: 1px; }
 .sstock-hpc__search--big { min-height: 56px; font-size: 18px; margin-bottom: 8px; }
 .sstock-hpc__cardlink { display: block; color: inherit; text-decoration: none; }
-article[data-scanned] { border-color: var(--dl-accent); box-shadow: 0 0 0 2px var(--dl-accent); }
-.sstock-hpc__hits { position: absolute; left: 0; right: 0; top: 52px; z-index: 6; display: flex; flex-direction: column; background: var(--dl-surface); border: 1px solid var(--dl-border); border-radius: var(--dl-radius-md, 10px); box-shadow: 0 8px 20px var(--dl-overlay-soft); overflow: hidden; }
+article[data-scanned] { border-color: var(--dl2-primary); box-shadow: 0 0 0 2px var(--dl2-primary); }
+.sstock-hpc__hits { position: absolute; left: 0; right: 0; top: 52px; z-index: 6; display: flex; flex-direction: column; background: var(--dl2-surface); border: 1px solid var(--dl2-border); border-radius: var(--dl2-radius, 10px); box-shadow: 0 8px 20px var(--ss-overlay-soft); overflow: hidden; }
 .sstock-hpc__hits[hidden] { display: none; }
-.sstock-hpc__hits button { min-height: 48px; padding: 6px 12px; border: 0; border-bottom: 1px solid var(--dl-border); background: none; font: inherit; font-size: 15px; text-align: left; color: var(--dl-ink); cursor: pointer; }
+.sstock-hpc__hits button { min-height: 48px; padding: 6px 12px; border: 0; border-bottom: 1px solid var(--dl2-border); background: none; font: inherit; font-size: 15px; text-align: left; color: var(--dl2-ink); cursor: pointer; }
 .sstock-hpc__card { padding: 16px; }
-.sstock-hpc__name { margin: 0 0 4px; font-size: 20px; line-height: 1.25; font-weight: 700; color: var(--dl-ink-strong); }
+.sstock-hpc__name { margin: 0 0 4px; font-size: 20px; line-height: 1.25; font-weight: 700; color: var(--dl2-ink); }
 .sstock-hpc__meta { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
 .sstock-hpc__sys { margin: 0 0 8px; font-size: 15px; font-weight: 700; }
-.sstock-hpc__warn { margin: 0 0 10px; padding: 10px 12px; border-radius: var(--dl-radius-md, 10px); background: color-mix(in srgb, var(--dl-amber) 14%, var(--dl-surface)); border: 1px solid var(--dl-amber); font-size: 14px; font-weight: 600; }
+.sstock-hpc__warn { margin: 0 0 10px; padding: 10px 12px; border-radius: var(--dl2-radius, 10px); background: color-mix(in srgb, var(--dl2-warning) 14%, var(--dl2-surface)); border: 1px solid var(--dl2-warning); font-size: 14px; font-weight: 600; }
 .sstock-hpc__warn[hidden], .sstock-hpc__bad[hidden], .sstock-hpc__conflict[hidden], .sstock-hpc__sys[hidden], [data-single][hidden], [data-summary][hidden], [data-finish][hidden], [data-not-yet][hidden] { display: none; }
 .sstock-hpc__lbl { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 700; }
 .sstock-hpc__qtyrow { display: flex; align-items: center; gap: 12px; }
-.dl-phone .sstock-hpc__qty { flex: 1; min-width: 0; height: 72px; padding: 0 14px; font-size: 36px; font-weight: 700; text-align: right; }
-.sstock-hpc__qty:disabled { background: var(--dl-field-ro); color: var(--dl-disabled); }
+.sstock-on-phone .sstock-hpc__qty { flex: 1; min-width: 0; height: 72px; padding: 0 14px; font-size: 36px; font-weight: 700; text-align: right; }
+.sstock-hpc__qty:disabled { background: var(--dl2-surface-2); color: var(--dl2-ink-soft); }
 .sstock-hpc__unit { flex: none; min-width: 44px; font-size: 20px; font-weight: 700; }
 .sstock-hpc__state { margin: 8px 0 0; font-size: 14px; font-weight: 700; }
-.sstock-hpc__state[data-on="1"] { color: var(--dl-success); }
-.sstock-hpc__bad { margin: 8px 0 0; font-size: 14px; font-weight: 700; color: var(--dl-danger); }
-.sstock-hpc__conflict { margin: 12px 0 0; padding: 12px; border-radius: var(--dl-radius-md, 10px); background: var(--dl-danger-soft); border: 1px solid var(--dl-danger-line); font-size: 14px; }
+.sstock-hpc__state[data-on="1"] { color: var(--dl2-success); }
+.sstock-hpc__bad { margin: 8px 0 0; font-size: 14px; font-weight: 700; color: var(--dl2-danger); }
+.sstock-hpc__conflict { margin: 12px 0 0; padding: 12px; border-radius: var(--dl2-radius, 10px); background: var(--ss-danger-soft); border: 1px solid var(--ss-danger-line); font-size: 14px; }
 .sstock-hpc__conflict p { margin: 0 0 8px; font-weight: 600; }
 .sstock-hpc__skip { display: flex; align-items: flex-start; gap: 12px; min-height: 48px; margin-top: 14px; font-size: 15px; font-weight: 600; }
 .sstock-hpc__skip input { flex: none; width: 24px; height: 24px; margin-top: 2px; }
 .sstock-hpc__more { margin-top: 10px; }
-.sstock-hpc__more summary { min-height: 44px; display: flex; align-items: center; font-weight: 700; color: var(--dl-accent); cursor: pointer; }
-.sstock-hpc__btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 8px; white-space: nowrap; border: 1.5px solid var(--dl-border-hover); border-radius: var(--dl-radius-md, 10px); background: var(--dl-surface); color: var(--dl-ink-strong); font: inherit; font-size: 16px; font-weight: 700; text-decoration: none; cursor: pointer; }
-.sstock-hpc__btn:disabled { color: var(--dl-disabled); }
-.sstock-hpc__btn--go { background: var(--dl-accent); border-color: var(--dl-accent); color: var(--dl-side-ink); }
+.sstock-hpc__more summary { min-height: 44px; display: flex; align-items: center; font-weight: 700; color: var(--dl2-primary); cursor: pointer; }
+.sstock-hpc__btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 8px; white-space: nowrap; border: 1.5px solid var(--dl2-border); border-radius: var(--dl2-radius, 10px); background: var(--dl2-surface); color: var(--dl2-ink); font: inherit; font-size: 16px; font-weight: 700; text-decoration: none; cursor: pointer; }
+.sstock-hpc__btn:disabled { color: var(--dl2-ink-soft); }
+.sstock-hpc__btn--go { background: var(--dl2-primary); border-color: var(--dl2-primary); color: var(--dl2-primary-ink); }
 .sstock-hpc__btn--block { display: flex; width: 100%; margin-top: 10px; box-sizing: border-box; }
 .sstock-hpc__btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
 .sstock-hpc__list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
-.sstock-hpc__open { min-height: 48px; padding: 6px 12px; border: 1px solid var(--dl-border); border-radius: var(--dl-radius-md, 10px); background: var(--dl-surface); font: inherit; font-size: 15px; text-align: left; color: var(--dl-ink); cursor: pointer; }
+.sstock-hpc__open { min-height: 48px; padding: 6px 12px; border: 1px solid var(--dl2-border); border-radius: var(--dl2-radius, 10px); background: var(--dl2-surface); font: inherit; font-size: 15px; text-align: left; color: var(--dl2-ink); cursor: pointer; }
 
 [data-finish] p { margin: 8px 0 12px; }
 
 
-/* Layar masuk tampilan HP: foto tegak penuh layar + kerudung gelap tipis; kotak isian jadi kartu permukaan DevLib di atasnya (teks tetap kontras, seperti x-dl::frame card di desktop). */
-.sstock-hpwall.has-photo { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; background: var(--dl-navy); }
+/* Layar masuk tampilan HP: foto tegak penuh layar + kerudung gelap tipis; kotak isian jadi kartu permukaan DevLib di atasnya (teks tetap kontras, seperti x-dl2::frame card di desktop). */
+.sstock-hpwall.has-photo { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; background: var(--ss-navy); }
 .sstock-hpwall__img { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.sstock-hpwall.has-photo::before { content: ""; position: absolute; z-index: 1; inset: 0; background: color-mix(in srgb, var(--dl-navy) 38%, transparent); }
-.sstock-hpwall.has-photo > .dl-plogin { position: relative; z-index: 2; height: auto; max-height: 100%; border-radius: var(--dl-radius-xl); box-shadow: var(--dl-shadow-modal); }
+.sstock-hpwall.has-photo::before { content: ""; position: absolute; z-index: 1; inset: 0; background: color-mix(in srgb, var(--ss-navy) 38%, transparent); }
+.sstock-hpwall.has-photo > .sstock-plogin { position: relative; z-index: 2; height: auto; max-height: 100%; border-radius: var(--dl2-radius-lg); box-shadow: var(--dl2-shadow-lg); }
 
-.dl-report-filter { padding-top: .75rem; }
-.dl-report-filter .dl-actionbar { justify-content: flex-start; border-top: 0; padding-top: 0; margin-top: -.25rem; }
+.sstock-report-filter { padding-top: .75rem; }
+.sstock-report-filter .dl2-abar { justify-content: flex-start; border-top: 0; padding-top: 0; margin-top: -.25rem; }
 
 /* Banner peringatan berbaris (components/alert-bar): ikon, teks, tombol di kanan sejajar; membungkus di layar sempit. Aksi utama = tombol terisi sesuai tingkat, sekunder = outline; tinggi 40px dan radius pil konsisten. */
-.sstock-abar { --a: var(--dl-danger); --a-on: var(--dl-on-danger, #fff); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 16px; padding: 12px 16px; color: var(--dl-ink); background: color-mix(in srgb, var(--a) 12%, var(--dl-surface)); border: 1px solid color-mix(in srgb, var(--a) 45%, var(--dl-surface)); border-left: 6px solid var(--a); border-radius: 14px; }
-.sstock-abar--warn { --a: var(--dl-amber); --a-on: #3b2a00; }
-.sstock-abar--info { --a: var(--dl-accent); --a-on: var(--dl-on-accent); }
+.sstock-abar { --a: var(--dl2-danger); --a-on: var(--ss-on-danger, #fff); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 16px; padding: 12px 16px; color: var(--dl2-ink); background: color-mix(in srgb, var(--a) 12%, var(--dl2-surface)); border: 1px solid color-mix(in srgb, var(--a) 45%, var(--dl2-surface)); border-left: 6px solid var(--a); border-radius: 14px; }
+.sstock-abar--warn { --a: var(--dl2-warning); --a-on: #3b2a00; }
+.sstock-abar--info { --a: var(--dl2-primary); --a-on: var(--dl2-primary-ink); }
 .sstock-abar__i { display: grid; place-items: center; flex: none; width: 36px; height: 36px; font-size: 17px; color: var(--a-on); background: var(--a); border-radius: 10px; }
 .sstock-abar__t { flex: 1 1 260px; margin: 0; font-size: 14px; line-height: 1.45; }
 .sstock-abar__act { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
-.sstock-abar .dl-btn { min-height: 40px; padding: 0 16px; margin: 0; font-size: 14px; font-weight: 600; border-radius: 99px; }
-.sstock-abar .dl-btn--primary { color: var(--a-on); background: var(--a); }
-.sstock-abar--warn .dl-btn--primary { color: #3b2a00; }
-.sstock-abar .dl-btn--primary:hover { background: color-mix(in srgb, var(--a) 85%, #000); }
-.sstock-abar .dl-btn--secondary { color: var(--dl-ink); background: transparent; border: 2px solid var(--a); }
-.sstock-abar .dl-btn--secondary:hover { background: color-mix(in srgb, var(--a) 15%, transparent); }
-@media (max-width: 600px) { .sstock-abar__act { width: 100%; margin-left: 0; } .sstock-abar__act .dl-btn { flex: 1 1 auto; justify-content: center; } }
+.sstock-abar .dl2-btn { min-height: 40px; padding: 0 16px; margin: 0; font-size: 14px; font-weight: 600; border-radius: 99px; }
+.sstock-abar .dl2-btn-primary { color: var(--a-on); background: var(--a); }
+.sstock-abar--warn .dl2-btn-primary { color: #3b2a00; }
+.sstock-abar .dl2-btn-primary:hover { background: color-mix(in srgb, var(--a) 85%, #000); }
+.sstock-abar .dl2-btn-secondary { color: var(--dl2-ink); background: transparent; border: 2px solid var(--a); }
+.sstock-abar .dl2-btn-secondary:hover { background: color-mix(in srgb, var(--a) 15%, transparent); }
+@media (max-width: 600px) { .sstock-abar__act { width: 100%; margin-left: 0; } .sstock-abar__act .dl2-btn { flex: 1 1 auto; justify-content: center; } }
 
 /* Kotak Perlu tindakan (opening-body, section ga): judul berikon + jumlah total, tiap item baris berwarna menurut tingkat (danger merah, warn amber), ikon modul, angka besar, panah; seluruh baris tautan. Kosong = pesan hijau. */
 .sstock-todo { display: grid; gap: 8px; margin: 0 0 14px; }
 .sstock-todo h2 { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 16px; }
-.sstock-todo__n { padding: 1px 10px; font-size: 13px; color: #fff; background: var(--dl-danger); border-radius: 99px; }
-.sstock-trow { --a: var(--dl-amber); display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 8px 16px; color: var(--dl-ink); text-decoration: none; background: color-mix(in srgb, var(--a) 14%, var(--dl-surface)); border: 1px solid color-mix(in srgb, var(--a) 45%, var(--dl-surface)); border-left: 6px solid var(--a); border-radius: 14px; }
-.sstock-trow.is-danger { --a: var(--dl-danger); }
+.sstock-todo__n { padding: 1px 10px; font-size: 13px; color: #fff; background: var(--dl2-danger); border-radius: 99px; }
+.sstock-trow { --a: var(--dl2-warning); display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 8px 16px; color: var(--dl2-ink); text-decoration: none; background: color-mix(in srgb, var(--a) 14%, var(--dl2-surface)); border: 1px solid color-mix(in srgb, var(--a) 45%, var(--dl2-surface)); border-left: 6px solid var(--a); border-radius: 14px; }
+.sstock-trow.is-danger { --a: var(--dl2-danger); }
 .sstock-trow > i:first-child { display: grid; place-items: center; flex: none; width: 36px; height: 36px; font-size: 16px; color: #fff; background: var(--a); border-radius: 10px; }
-.sstock-trow b { min-width: 32px; font-size: 28px; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; color: color-mix(in srgb, var(--a) 80%, var(--dl-ink)); }
+.sstock-trow b { min-width: 32px; font-size: 28px; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; color: color-mix(in srgb, var(--a) 80%, var(--dl2-ink)); }
 .sstock-trow span { flex: 1; font-size: 15px; }
 .sstock-trow__go { opacity: .55; }
 .sstock-trow:is(:hover, :focus-visible) { box-shadow: 0 6px 16px color-mix(in srgb, var(--a) 25%, transparent); outline: none; }
 .sstock-trow:hover .sstock-trow__go { opacity: 1; }
-.sstock-tok { display: flex; align-items: center; gap: 10px; margin: 0; padding: 12px 16px; font-size: 15px; font-weight: 600; color: color-mix(in srgb, var(--dl-success) 70%, var(--dl-ink)); background: color-mix(in srgb, var(--dl-success) 14%, var(--dl-surface)); border: 1px solid color-mix(in srgb, var(--dl-success) 45%, var(--dl-surface)); border-left: 6px solid var(--dl-success); border-radius: 14px; }
-.sstock-tok i { font-size: 20px; color: var(--dl-success); }
+.sstock-tok { display: flex; align-items: center; gap: 10px; margin: 0; padding: 12px 16px; font-size: 15px; font-weight: 600; color: color-mix(in srgb, var(--dl2-success) 70%, var(--dl2-ink)); background: color-mix(in srgb, var(--dl2-success) 14%, var(--dl2-surface)); border: 1px solid color-mix(in srgb, var(--dl2-success) 45%, var(--dl2-surface)); border-left: 6px solid var(--dl2-success); border-radius: 14px; }
+.sstock-tok i { font-size: 20px; color: var(--dl2-success); }
+
+/* Token tambahan aplikasi (tidak ada di DevLib 2). */
+:root {
+    --ss-accent-soft: color-mix(in srgb, var(--dl2-primary) 14%, transparent);
+    --ss-danger-soft: color-mix(in srgb, var(--dl2-danger) 12%, var(--dl2-surface));
+    --ss-danger-line: color-mix(in srgb, var(--dl2-danger) 45%, var(--dl2-border));
+    --ss-on-danger: #fff;
+    --ss-overlay-soft: rgba(15, 23, 42, .45);
+    --ss-navy: #0f172a;
+}
+
+/* Kotak lupa / reset password (auth/_*-password-box): satu kolom, tengah, lebar maksimum 380px. Layar masuk HP: kartu di atas foto. */
+.sstock-loginbox { width: 100%; max-width: 380px; margin: 0 auto; padding: 24px 20px; }
+.sstock-loginbox__form { display: flex; flex-direction: column; gap: 12px; }
+.sstock-loginbox__title { margin: 8px 0 0; font-size: 1.5rem; font-weight: 700; }
+.sstock-loginbox__sub { margin: 0; font-size: .9rem; color: var(--dl2-ink-soft); }
+.sstock-loginbox__reg { margin: 4px 0 0; text-align: center; }
+.sstock-plogin { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--dl2-surface); }
+
+/* Kolom pencarian barang di baris dokumen (resources/js/doc-lines.js): daftar hasil melayang di bawah kotak isian. */
+.sstock-lk { position: relative; min-width: 14rem; }
+.sstock-lk-list { position: absolute; z-index: 30; left: 0; right: 0; top: 100%; margin: 2px 0 0; padding: 4px; list-style: none; max-height: 16rem; overflow: auto; background: var(--dl2-surface); border: 1px solid var(--dl2-border); border-radius: var(--dl2-radius); box-shadow: var(--dl2-shadow-lg); }
+.sstock-lk-list[hidden] { display: none; }
+.sstock-lk-list button { display: block; width: 100%; padding: 6px 8px; border: 0; background: none; text-align: left; color: inherit; font: inherit; cursor: pointer; border-radius: 4px; }
+.sstock-lk-list button:hover, .sstock-lk-list button:focus-visible { background: var(--ss-accent-soft); outline: none; }
+.sstock-lk-none { padding: 6px 8px; color: var(--dl2-ink-soft); }
+
+/* Kartu layar HP (hp/find, hp/counts, hp/count): permukaan, garis tepi, sudut membulat. */
+.sstock-card { margin: 0 0 12px; padding: 14px 16px; background: var(--dl2-surface); border: 1px solid var(--dl2-border); border-radius: var(--dl2-radius); box-shadow: var(--dl2-shadow-sm); }
+.sstock-card > :first-child { margin-top: 0; }
+.sstock-card > :last-child { margin-bottom: 0; }
+
+/* Formulir aksi (components/action-form): tombol berdampingan, tanpa jarak form bawaan. */
+.sstock-aform { display: inline-flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin: 0; }
+.sstock-aform.sstock-report-filter { display: block; }
+
+/* Label versi aplikasi di bawah formulir masuk (ver 0.<jumlah commit> + huruf tahap). */
+.sstock-ver { display: inline-block; margin-top: 12px; font-size: .75rem; color: var(--dl2-ink-soft); }
+.sstock-ver__stage { padding: 0 4px; border: 1px solid currentColor; border-radius: 4px; }
+
+/* Bilah tombol Sebelumnya / Berikutnya di bawah kartu Hitung Opname HP (DevLib 2 phone-bar membuang slot, jadi bilahnya ditulis di sini). */
+.sstock-hpbar { display: grid; grid-template-columns: 1fr 1.5fr; gap: 8px; position: sticky; bottom: 0; padding: 8px 0; background: var(--dl2-bg); }

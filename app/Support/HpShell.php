@@ -3,10 +3,10 @@
 namespace App\Support;
 
 use App\Models\User;
-use Devlib\Device;
+use Devlib2\Device;
 
 /* REMARK
- * Tujuan       : Data kerangka tampilan HP (x-dl::phone-shell): menu utama besar di panel Menu (Beranda, Stok, Transaksi, Opname; tombol kelima Menu = semua modul) dan modul panel Menu, disaring menurut akses pengguna.
+ * Tujuan       : Data kerangka tampilan HP (x-dl2::phone-shell): menu utama besar di panel Menu (Beranda, Stok, Transaksi, Opname; tombol kelima Menu = semua modul) dan modul panel Menu, disaring menurut akses pengguna.
  *                Modul yang belum punya tampilan HP dibuka lewat hp.open (halaman desktop di dalam kerangka); Stok Opname punya tampilan HP sendiri (hp.counts).
  * Sumber hulu  : Modules (daftar modul), Menu (modul menurut akses), User::canAccess.
  * Output       : tabs(), modules(), url(kode), tabFor(kode).
@@ -24,7 +24,7 @@ final class HpShell
         return Device::detect(request()->userAgent(), request()->header('Sec-CH-UA-Mobile')) === Device::PHONE;
     }
 
-    // Alamat peralihan tampilan untuk x-dl::phone-shell / phone-login: ponsel asli tidak punya (null = tombol tidak digambar); jendela komputer yang sempit tetap perlu jalan kembali ke desktop.
+    // Alamat peralihan tampilan untuk x-dl2::phone-shell / phone-login: ponsel asli tidak punya (null = tombol tidak digambar); jendela komputer yang sempit tetap perlu jalan kembali ke desktop.
     public static function deviceAction(): ?string
     {
         return self::isRealPhone() ? null : route('ui.set');
@@ -51,7 +51,8 @@ final class HpShell
             $user->canAccess('SO') ? ['key' => 'count', 'label' => 'Opname', 'icon' => 'fa-solid fa-clipboard-check', 'url' => route('hp.counts')] : null,
         ];
 
-        return array_values(array_filter($tabs));
+        // DevLib 2 phone-shell membaca id + href (v1: key + url): keduanya dikirim.
+        return array_values(array_map(fn (array $t) => $t + ['id' => $t['key'], 'href' => $t['url']], array_filter($tabs)));
     }
 
     // Menu utama yang ditandai untuk satu modul: Ringkasan Stok / Barang = Stok, modul Transaksi = Transaksi, Stok Opname = Opname, Laporan = Laporan, sisanya tidak ada.

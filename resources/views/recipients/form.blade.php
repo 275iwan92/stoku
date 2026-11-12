@@ -15,18 +15,18 @@
         $deptOptions = $departments + ($recipient->department && ! isset($departments[$recipient->department_id]) ? [$recipient->department_id => $recipient->department->name] : []);
     @endphp
     @include('partials.flash')
-    <x-dl::form :title="$isNew ? 'Penerima · Baru' : 'Penerima · '.raw($recipient->name)" panel="top" kind="master"
+    <x-dl2::form :title="$isNew ? 'Penerima · Baru' : 'Penerima · '.raw($recipient->name)" panel="top" kind="master"
         :status="$isNew ? 'new' : ($recipient->is_active ? 'active' : 'inactive')" :back="route('recipients.index')" :new-url="route('recipients.create')"
-        :action="$isNew ? route('recipients.store') : route('recipients.update', $recipient)" :hidden="$isNew ? [] : ['_method' => 'PUT']"
+        :action="$isNew ? route('recipients.store') : route('recipients.update', $recipient)" :method="$isNew ? 'post' : 'put'"
         :created-at="$recipient->created_at?->format('Y-m-d H:i:s')" :updated-at="$recipient->updated_at?->format('Y-m-d H:i:s')">
-        <x-dl::form.row :cols="3">
-            <x-dl::field.text name="name" label="Recipient Name" :value="$v('name')" required maxlength="100" :error="$e('name')" />
-            <x-dl::field.select name="department_id" label="Default Department" :options="$deptOptions" :value="$v('department_id')" :add="\App\Support\QuickAdd::for('department')" :error="$e('department_id')" hint="Used in Issuance when no department is chosen." />
-        </x-dl::form.row>
+        <x-dl2::form.row :cols="3">
+            <x-dl2::field.text name="name" label="Recipient Name" :value="$v('name')" required maxlength="100" :error="$e('name')" />
+            <x-dl2::field.select name="department_id" label="Default Department" :options="$deptOptions" :value="$v('department_id')" :add="\App\Support\QuickAdd::for('department')" :error="$e('department_id')" hint="Used in Issuance when no department is chosen." />
+        </x-dl2::form.row>
         @unless ($isNew)
-            <x-dl::form.row :cols="3">
-                <x-dl::field.display label="Issuance Documents" :value="(string) $recipient->documents_count" />
-            </x-dl::form.row>
+            <x-dl2::form.row :cols="3">
+                <x-dl2::field.display label="Issuance Documents" :value="(string) $recipient->documents_count" />
+            </x-dl2::form.row>
         @endunless
-    </x-dl::form>
+    </x-dl2::form>
 @endsection

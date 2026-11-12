@@ -11,7 +11,7 @@ use App\Services\CountSchedule;
 use App\Services\LeadTimes;
 use App\Services\StockValuation;
 use App\Support\Menu;
-use Devlib\Device;
+use Devlib2\Device;
 use Illuminate\Http\Request;
 
 /* REMARK

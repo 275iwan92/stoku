@@ -14,24 +14,24 @@
         $e = fn (string $k) => $errors->first($k) ?: null;
     @endphp
     @include('partials.flash')
-    <x-dl::form :title="$isNew ? 'Supplier · Baru' : 'Supplier · '.raw($supplier->code)" :subtitle="$isNew ? null : raw($supplier->name)" panel="top" kind="master"
+    <x-dl2::form :title="$isNew ? 'Supplier · Baru' : 'Supplier · '.raw($supplier->code)" :subtitle="$isNew ? null : raw($supplier->name)" panel="top" kind="master"
         :status="$isNew ? 'new' : ($supplier->is_active ? 'active' : 'inactive')" :back="route('suppliers.index')" :new-url="route('suppliers.create')"
-        :action="$isNew ? route('suppliers.store') : route('suppliers.update', $supplier)" :hidden="$isNew ? [] : ['_method' => 'PUT']"
+        :action="$isNew ? route('suppliers.store') : route('suppliers.update', $supplier)" :method="$isNew ? 'post' : 'put'"
         :hide="$supplier->is_system ? ['deactivate', 'activate'] : []" :created-at="$supplier->created_at?->format('Y-m-d H:i:s')" :updated-at="$supplier->updated_at?->format('Y-m-d H:i:s')">
-        <x-dl::form.row :cols="3">
-            <x-dl::field.text name="code" label="Supplier Code" :value="$v('code')" code :case-toggle="false" required :readonly="! $isNew" maxlength="20" :error="$e('code')" hint="Unique. Cannot be changed after saving." />
-            <x-dl::field.text name="name" label="Supplier Name" :value="$v('name')" required :readonly="(bool) $supplier->is_system" maxlength="150" :error="$e('name')" />
-        </x-dl::form.row>
-        <x-dl::form.row :cols="3">
-            <x-dl::field.phone name="phone" label="Company Phone (PSTN)" :value="$v('phone')" :error="$e('phone')" hint="Landline, with area code." />
-            <x-dl::field.text name="contact_name" label="Contact Name" :value="$v('contact_name')" maxlength="100" :error="$e('contact_name')" />
-            <x-dl::field.phone name="contact_mobile" label="Contact Mobile (smartphone)" :value="$v('contact_mobile')" :error="$e('contact_mobile')" hint="Also used for WhatsApp." />
-        </x-dl::form.row>
-        <x-dl::form.row>
-            <x-dl::field.text name="address" label="Street Address" :value="$v('address')" maxlength="255" :error="$e('address')" />
-        </x-dl::form.row>
-        <x-dl::form.row>
-            <x-dl::field.lookup name="area" lookup="geo_area" label="District, City / Regency, Province, Country" placeholder="Search district / city / postcode..." :value="old('area', $supplier->areaKey())" :required="App\Support\GeoArea::available()" :error="$e('area')" hint="One choice gives district, city / regency, province, country, and the postal code." />
-        </x-dl::form.row>
-    </x-dl::form>
+        <x-dl2::form.row :cols="3">
+            <x-dl2::field.text name="code" label="Supplier Code" :value="$v('code')" code :case-toggle="false" required :readonly="! $isNew" maxlength="20" :error="$e('code')" hint="Unique. Cannot be changed after saving." />
+            <x-dl2::field.text name="name" label="Supplier Name" :value="$v('name')" required :readonly="(bool) $supplier->is_system" maxlength="150" :error="$e('name')" />
+        </x-dl2::form.row>
+        <x-dl2::form.row :cols="3">
+            <x-dl2::field.phone name="phone" label="Company Phone (PSTN)" :value="$v('phone')" :error="$e('phone')" hint="Landline, with area code." />
+            <x-dl2::field.text name="contact_name" label="Contact Name" :value="$v('contact_name')" maxlength="100" :error="$e('contact_name')" />
+            <x-dl2::field.phone name="contact_mobile" label="Contact Mobile (smartphone)" :value="$v('contact_mobile')" :error="$e('contact_mobile')" hint="Also used for WhatsApp." />
+        </x-dl2::form.row>
+        <x-dl2::form.row>
+            <x-dl2::field.text name="address" label="Street Address" :value="$v('address')" maxlength="255" :error="$e('address')" />
+        </x-dl2::form.row>
+        <x-dl2::form.row>
+            <x-dl2::field.lookup name="area" lookup="geo_area" label="District, City / Regency, Province, Country" placeholder="Search district / city / postcode..." :value="old('area', $supplier->areaKey())" :required="App\Support\GeoArea::available()" :error="$e('area')" hint="One choice gives district, city / regency, province, country, and the postal code." />
+        </x-dl2::form.row>
+    </x-dl2::form>
 @endsection
