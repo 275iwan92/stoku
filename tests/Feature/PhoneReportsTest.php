@@ -21,7 +21,7 @@ class PhoneReportsTest extends TestCase
         $this->withCookie('ui', 'phone');
 
         foreach (['reports.summary', 'reports.expiry', 'reports.receiving', 'reports.issuance', 'reports.adjustment'] as $route) {
-            $this->actingAs($sup)->get(route($route))->assertOk()->assertSee('data-phone-list', false);
+            $this->actingAs($sup)->get(route($route))->assertOk()->assertSee('&quot;phoneList&quot;', false);
         }
         $this->actingAs($sup)->get(route('reports.stock-card'))->assertOk();
     }
@@ -33,6 +33,6 @@ class PhoneReportsTest extends TestCase
         $this->withCookie('ui', 'desktop');
 
         $html = $this->actingAs($sup)->get(route('reports.summary'))->assertOk()->getContent();
-        $this->assertStringNotContainsString('dl-on-phone', $html);
+        $this->assertStringNotContainsString('sstock-on-phone', $html);
     }
 }

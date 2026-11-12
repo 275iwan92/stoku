@@ -63,7 +63,7 @@ class LeadTimeTest extends TestCase
         return ReorderOrder::create(['product_id' => $this->item->product_id, 'ordered_at' => today()->subDays($ago + $days), 'ref_no' => 'X', 'closed_at' => today()->subDays($ago)->setTime(23, 59), 'first_received_at' => today()->subDays($ago)->setTime(23, 59), 'close_reason' => 'manual']);
     }
 
-    private function lead(): \Devlib\Engine\LeadTime
+    private function lead(): \Devlib2\Engine\LeadTime
     {
         return LeadTimes::for($this->item->product->fresh());
     }

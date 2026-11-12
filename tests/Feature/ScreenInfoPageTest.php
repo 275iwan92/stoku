@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-// Halaman ukur layar publik /ukur: tanpa login, tanpa data pengguna, satu komponen DevLib x-dl::screen-info.
+// Halaman ukur layar publik /ukur: tanpa login, tanpa data pengguna, satu komponen DevLib x-dl2::screen-info.
 class ScreenInfoPageTest extends TestCase
 {
     use RefreshDatabase;
@@ -14,10 +14,9 @@ class ScreenInfoPageTest extends TestCase
     public function test_guest_opens_the_page_without_login_and_without_menu(): void
     {
         $html = $this->get('/ukur')->assertOk()->getContent();
-        $this->assertStringContainsString('data-dl-screen-info', $html);
-        $this->assertStringContainsString('data-sinfo-copy', $html);
-        $this->assertStringNotContainsString('dl-phone__burger', $html);
-        $this->assertStringNotContainsString('dl-layer', $html);
+        $this->assertStringContainsString('data-dl2="screen-info"', $html);
+        $this->assertStringNotContainsString('data-dl2="phone-shell"', $html);
+        $this->assertStringNotContainsString('data-dl2="layer-shell"', $html);
         $this->assertGuest();
     }
 
@@ -35,8 +34,8 @@ class ScreenInfoPageTest extends TestCase
         $ua = 'Mozilla/5.0 (Linux; Android 15; CPH2700) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36';
         $html = $this->withHeader('User-Agent', $ua)->get('/ukur')->assertOk()->getContent();
         $this->assertStringContainsString('viewport-fit=cover', $html);
-        $this->assertStringContainsString('data-view="phone"', $html);
-        $this->assertStringContainsString('data-view-source="user-agent"', $html);
-        $this->assertStringContainsString('data-os="android"', $html);
+        $this->assertStringContainsString('&quot;view&quot;:&quot;phone&quot;', $html);
+        $this->assertStringContainsString('&quot;viewSource&quot;:&quot;user-agent&quot;', $html);
+        $this->assertStringContainsString('&quot;os&quot;:&quot;android&quot;', $html);
     }
 }

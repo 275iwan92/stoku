@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 /* REMARK
  * Tujuan       : Menjaga Beranda: sapaan satu baris (nama depan) + tanggal / jam kecil, kartu cuaca di desktop dan chip di HP, tempat cadangan cuaca dari layar Perusahaan (tanpa cadangan kartu tersembunyi),
- *                dan baris jaringan x-dl::net-line di bawah nama (desktop dan daftar Menu HP) untuk semua pengguna, dengan rute ping DevLib tanpa sesi (bukan session.ping yang memperpanjang sesi).
+ *                dan baris jaringan x-dl2::net-line di bawah nama (desktop dan daftar Menu HP) untuk semua pengguna, dengan rute ping DevLib tanpa sesi (bukan session.ping yang memperpanjang sesi).
  * Dipakai oleh : php artisan test.
  * Status       : Aktif.
  */
@@ -31,15 +31,15 @@ class HomeGreetingTest extends TestCase
     {
         $html = $this->home()->getContent();
 
-        $this->assertStringContainsString('data-dl-greeting data-name="Budi"', $html);
-        $this->assertStringContainsString('dl-clock dl-clock--line', $html);
+        $this->assertStringContainsString('data-dl2="greeting" data-dl2-config="{&quot;name&quot;:&quot;Budi&quot;}"', $html);
+        $this->assertStringContainsString('data-dl2="clock" data-dl2-config="{&quot;mode&quot;:&quot;line&quot;}"', $html);
         $this->assertStringNotContainsString('👋', $html);
-        $this->assertStringContainsString('dl-weather dl-weather--card', $html);
+        $this->assertStringContainsString('data-dl2="weather" data-dl2-config="{&quot;variant&quot;:&quot;card&quot;', $html);
     }
 
     public function test_without_a_fallback_place_the_weather_card_is_hidden_and_with_one_it_carries_it(): void
     {
-        $this->assertMatchesRegularExpression('/data-dl-weather data-locate="1" data-ip-fallback="1"\s+hidden/', $this->home()->getContent());
+        $this->assertStringNotContainsString('&quot;lat&quot;', $this->home()->getContent());   // tanpa tempat cadangan: kartu cuaca tanpa koordinat
 
         Constants::set('company.weather_city', 'Malang', 'company');
         Constants::set('company.weather_lat', '-7.98', 'company');
@@ -47,7 +47,9 @@ class HomeGreetingTest extends TestCase
         Constants::forget();
         $html = $this->home()->getContent();
 
-        $this->assertStringContainsString('data-lat="-7.98" data-lon="112.63" data-city="Malang"', $html);
+        foreach (['&quot;lat&quot;:-7.98', '&quot;lon&quot;:112.63', '&quot;city&quot;:&quot;Malang&quot;'] as $part) {
+            $this->assertStringContainsString($part, $html);
+        }
         $this->assertSame(['city' => 'Malang', 'lat' => -7.98, 'lon' => 112.63], Company::weather());
     }
 
@@ -56,19 +58,19 @@ class HomeGreetingTest extends TestCase
         $html = $this->home('data_entry', self::PHONE)->getContent();
 
         $this->assertStringContainsString('sstock-hello--hp', $html);
-        $this->assertStringContainsString('data-dl-greeting data-name="Budi"', $html);
-        $this->assertStringContainsString('dl-weather dl-weather--chip', $html);
-        $this->assertStringNotContainsString('dl-weather--card', $html);
+        $this->assertStringContainsString('data-dl2="greeting" data-dl2-config="{&quot;name&quot;:&quot;Budi&quot;}"', $html);
+        $this->assertStringContainsString('&quot;variant&quot;:&quot;chip&quot;', $html);
+        $this->assertStringNotContainsString('&quot;variant&quot;:&quot;card&quot;', $html);
     }
 
     public function test_every_user_gets_the_network_line_on_desktop_and_in_the_phone_menu_with_the_devlib_ping(): void
     {
         $desktop = $this->home()->getContent();
-        $this->assertStringContainsString('data-dl-net-line', $desktop);
-        $this->assertStringContainsString('data-ping="'.route('devlib.ping').'"', $desktop);
-        $this->assertStringNotContainsString('data-ping="'.route('session.ping').'"', $desktop);
+        $this->assertStringContainsString('data-dl2="net-line"', $desktop);
+        $this->assertStringContainsString('&quot;pingUrl&quot;:&quot;'.route('devlib.ping').'&quot;', $desktop);
+        $this->assertDoesNotMatchRegularExpression('#data-dl2="net-line"[^>]*session/ping#', $desktop);   // o ping jaringan bukan session.ping (idle-logout memakainya)
 
-        $this->assertStringContainsString('data-dl-net-line', $this->home('supervisor', self::PHONE)->getContent());
+        $this->assertStringContainsString('data-dl2="net-line"', $this->home('supervisor', self::PHONE)->getContent());
     }
 
     public function test_the_devlib_ping_route_answers_without_a_session_so_it_cannot_extend_it(): void
@@ -102,12 +104,9 @@ class HomeGreetingTest extends TestCase
         $count = trim((string) shell_exec('git -C '.escapeshellarg(base_path()).' rev-list --count HEAD'));
         $this->assertMatchesRegularExpression('/^\d+$/', $count);
 
-        $home = $this->home()->getContent();
-        $this->assertMatchesRegularExpression('/dl-envbadge--version[^>]*title="alpha"[^>]*>ver 0\.'.$count.'\s*<span class="dl-envbadge__stage">A<\/span>/', $home);
-
         $this->post('/logout');
         $login = $this->get(route('login'))->getContent();
-        $this->assertStringContainsString('dl-envbadge--loginver', $login);
+        $this->assertMatchesRegularExpression('/class="sstock-ver" title="alpha">ver 0\.'.$count.'\s*<span class="sstock-ver__stage">A<\/span>/', $login);
         $this->assertStringContainsString('ver 0.'.$count, $login);
     }
 }

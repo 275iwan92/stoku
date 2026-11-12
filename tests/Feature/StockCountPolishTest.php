@@ -66,7 +66,9 @@ class StockCountPolishTest extends TestCase
 
     private function rows(string $html): Collection
     {
-        return collect(json_decode(html_entity_decode(preg_match('/data-rows="([^"]*)"/', $html, $m) ? $m[1] : '[]'), true))->keyBy('code');
+        $cfg = json_decode(html_entity_decode(preg_match('/data-dl2="row-sheet" data-dl2-config="([^"]*)"/', $html, $m) ? $m[1] : '{}'), true);   // baris lembar ada di config row-sheet DevLib 2
+
+        return collect($cfg['rows'] ?? [])->keyBy('code');
     }
 
     public function test_large_differences_are_tinted_on_the_entry_sheet_but_never_on_a_blind_count(): void

@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /* REMARK
- * Tujuan       : Menjaga layar FORMULIR data master dan admin di Tampilan HP: semua form terbuka (cookie ui=phone) tanpa galat dan memakai konteks HP; tabel kecil di form Barang bertumpuk (x-dl::table stack),
+ * Tujuan       : Menjaga layar FORMULIR data master dan admin di Tampilan HP: semua form terbuka (cookie ui=phone) tanpa galat dan memakai konteks HP; tabel kecil di form Barang bertumpuk (x-dl2::table stack),
  *                layar Modul memakai kartu, Lupa / Atur ulang password memakai kerangka login HP; desktop tidak berubah (tanpa dl-on-phone, kerangka lama).
  * Dipakai oleh : php artisan test.
  * Status       : Aktif.
@@ -55,8 +55,8 @@ class PhoneFormsTest extends TestCase
     {
         $this->actingAs(User::factory()->administrator()->create());
         foreach ($this->screens() as $name => $url) {
-            $this->withCookie('ui', 'phone')->get($url)->assertOk()->assertSee('dl-on-phone', false);
-            $this->withCookie('ui', 'desktop')->withHeader('User-Agent', self::PC)->get($url)->assertOk()->assertDontSee('dl-on-phone', false);
+            $this->withCookie('ui', 'phone')->get($url)->assertOk()->assertSee('sstock-on-phone', false);
+            $this->withCookie('ui', 'desktop')->withHeader('User-Agent', self::PC)->get($url)->assertOk()->assertDontSee('sstock-on-phone', false);
         }
     }
 
@@ -66,7 +66,7 @@ class PhoneFormsTest extends TestCase
         $p = $this->product();
         ProductUnit::create(['product_id' => $p->id, 'unit' => 'dus', 'factor' => 12]);
         $html = $this->withCookie('ui', 'phone')->get(route('products.show', $p))->assertOk()->getContent();
-        $this->assertSame(2, substr_count($html, 'dl-table--stack'), 'tabel Batch dan Satuan masuk');
+        $this->assertSame(2, substr_count($html, 'dl2-table-stack'), 'tabel Batch dan Satuan masuk');
         $this->assertStringContainsString('data-label="Faktor ke pcs"', $html);
     }
 
@@ -80,11 +80,11 @@ class PhoneFormsTest extends TestCase
     {
         foreach ([route('password.request'), route('password.reset', ['token' => 'abc', 'email' => 'a@b.test'])] as $url) {
             $phone = $this->withCookie('ui', 'phone')->get($url)->assertOk()->getContent();
-            $this->assertStringContainsString('dl-plogin', $phone);
-            $this->assertStringNotContainsString('dl-frame', $phone);
+            $this->assertStringContainsString('sstock-plogin', $phone);
+            $this->assertStringNotContainsString('data-dl2="frame"', $phone);
             $pc = $this->withCookie('ui', 'desktop')->withHeader('User-Agent', self::PC)->get($url)->assertOk()->getContent();
-            $this->assertStringNotContainsString('dl-plogin', $pc);
-            $this->assertStringContainsString('dl-loginbox', $pc);
+            $this->assertStringNotContainsString('sstock-plogin', $pc);
+            $this->assertStringContainsString('sstock-loginbox', $pc);
         }
     }
 }

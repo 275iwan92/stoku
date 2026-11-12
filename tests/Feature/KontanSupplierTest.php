@@ -54,7 +54,7 @@ class KontanSupplierTest extends TestCase
     {
         Supplier::create(['code' => 'A1', 'name' => 'Aaa Pertama Abjad']);
         $user = User::factory()->supervisor()->create();
-        $first = fn (string $html) => preg_match('/data-value="(\d+)"/', substr($html, strpos($html, 'name="supplier_id"')), $m) ? (int) $m[1] : null;
+        $first = fn (string $html) => preg_match('/&quot;value&quot;:&quot;(\d+)&quot;/', substr($html, strpos($html, '&quot;name&quot;:&quot;supplier_id&quot;')), $m) ? (int) $m[1] : null;
 
         $this->actingAs($user);
         $this->assertSame($this->kontan()->id, $first($this->get(route('docs.create', 'receiving'))->assertOk()->getContent()));
@@ -83,8 +83,8 @@ class KontanSupplierTest extends TestCase
         $user = User::factory()->supervisor()->create();
         $other = Supplier::create(['code' => 'S1', 'name' => 'Biasa']);
 
-        $this->actingAs($user)->get(route('suppliers.show', $this->kontan()))->assertOk()->assertDontSee('data-f-act="deactivate"', false);
-        $this->get(route('suppliers.show', $other))->assertOk()->assertSee('data-f-act="deactivate"', false);
+        $this->actingAs($user)->get(route('suppliers.show', $this->kontan()))->assertOk()->assertSee('&quot;hide&quot;:[&quot;deactivate&quot;', false);
+        $this->get(route('suppliers.show', $other))->assertOk()->assertDontSee('&quot;hide&quot;:[&quot;deactivate&quot;', false);
         $this->postJson(route('suppliers.toggle', $other))->assertOk()->assertJson(['active' => false]);
     }
 }

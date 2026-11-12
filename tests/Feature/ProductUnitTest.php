@@ -83,12 +83,12 @@ class ProductUnitTest extends TestCase
         $this->pack($b, 'lusin', 12);
         UnitConversion::create(['from_unit' => 'kg', 'to_unit' => 'pcs', 'factor' => 4]);
 
-        $rows = collect($this->getJson(route('devlib.lookup', 'product_in').'?q=Pensil')->assertOk()->json())->keyBy('code');
+        $rows = collect($this->getJson(route('devlib2.lookup', 'product_in').'?q=Pensil')->assertOk()->json())->keyBy('code');
         $packs = fn (string $code) => json_decode($rows[$code]['packs'], true);
 
         $this->assertSame(['stock' => 'pcs', 'own' => ['dus' => '12.000000'], 'global' => ['kg' => '4.0000000000']], $packs('PU-A'));
         $this->assertSame(['lusin' => '12.000000'], $packs('PU-B')['own']);   // dus milik A tidak ditawarkan ke B
-        $this->assertArrayNotHasKey('packs', collect($this->getJson(route('devlib.lookup', 'product_opn').'?q=Pensil')->json())->first());   // Saldo Awal selalu satuan stok
+        $this->assertArrayNotHasKey('packs', collect($this->getJson(route('devlib2.lookup', 'product_opn').'?q=Pensil')->json())->first());   // Saldo Awal selalu satuan stok
     }
 
     public function test_receiving_form_carries_the_options_of_each_saved_line(): void
@@ -101,7 +101,7 @@ class ProductUnitTest extends TestCase
         $html = str_replace('\\', '', $this->get(route('docs.show', ['receiving', StockDocument::latest('id')->firstOrFail()]))->assertOk()->getContent());
         $this->assertStringContainsString('&quot;stock_unit&quot;:&quot;pcs&quot;', $html);
         $this->assertStringContainsString('{&quot;stock&quot;:&quot;pcs&quot;,&quot;own&quot;:{&quot;dus&quot;:&quot;12.000000&quot;}', $html);
-        $this->assertStringContainsString('lines.cellRaw', $html);   // skrip pemilih satuan per baris terpasang
+        $this->assertStringContainsString('data-sstock-doc', $html);   // baris dokumen memasang pemilih satuan per baris (resources/js/doc-lines.js)
     }
 
     public function test_a_unit_without_any_factor_asks_for_it_and_the_popup_creates_the_product_factor_not_a_global_one(): void
