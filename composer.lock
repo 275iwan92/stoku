@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b364556096a2ca9ef6aa2173ecca1bb1",
+    "content-hash": "251f5e15f8f5c6b04e0fb9a3b191b397",
     "packages": [
         {
             "name": "brick/math",
@@ -1098,6 +1098,55 @@
                 }
             ],
             "description": "DevLib library untuk stoku (paket mandiri hasil devlib:pack)",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "jo/devlib2",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../devlib2",
+                "reference": "d98c39f2a3898e702ae949595c9e483e614a006d"
+            },
+            "require": {
+                "illuminate/support": "^13.0",
+                "illuminate/view": "^13.0",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^11.3",
+                "phpunit/phpunit": "^13.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Devlib2\\DevlibServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Devlib2\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Devlib2\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Jo"
+                }
+            ],
+            "description": "DevLib 2: fondasi UI seperti Bootstrap (CSS + JS tanpa build, satu include) dengan komponen kaya: Kanban, Gantt, Calendar, Eisenhower, Pomodoro, Music player; lapisan Blade x-dl2::* opsional.",
             "transport-options": {
                 "symlink": true,
                 "relative": true
@@ -8501,7 +8550,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "jo/devlib": 20
+        "jo/devlib": 20,
+        "jo/devlib2": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
