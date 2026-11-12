@@ -1,5 +1,5 @@
 {{-- REMARK
- Tujuan       : Formulir aksi satu baris (POST / GET / PUT) berisi tombol dan isian dari slot, dengan token CSRF. Pengganti x-dl::action-form v1: x-dl2::action-form milik DevLib 2 adalah formulir
+ Tujuan       : Formulir aksi satu baris (POST / GET / PUT) berisi tombol dan isian dari slot, dengan token CSRF. Pengganti action-form v1: x-dl2::action-form milik DevLib 2 adalah formulir
                 berbasis config yang menggambar isiannya sendiri (slot dibuang), jadi layar Stoku memakai komponen ini.
  Input        : action, method (post | get | put | patch | delete), slot.
  Output       : <form class="sstock-aform"> dengan @csrf dan @method bila perlu.
