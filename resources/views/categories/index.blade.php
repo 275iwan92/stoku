@@ -2,7 +2,7 @@
  Tujuan       : Daftar master Kategori barang (Grid Master): awalan kode + nama, jumlah barang.
  Sumber hulu  : CategoryController@index.
  Input        : rows.
- Output       : x-dl::grid; klik 2x / Edit membuka form kategori; saklar Aktif / Nonaktif.
+ Output       : x-dl2::grid (DevLib 2); klik 2x / Edit membuka form kategori; saklar Aktif / Nonaktif.
  Dipakai oleh : route categories.index (menu Data Master > Kategori, Supervisor).
  Status       : Aktif.
 --}}
@@ -11,13 +11,16 @@
     @php $rows = collect($rows)->map(fn ($r) => $r + ['itemsTone' => $r['items'] ? 'neutral' : 'warn'])->all(); @endphp
     @include('partials.flash')
     <div style="max-width: 820px">
-    <x-dl::grid id="categories" :rows="$rows" actions="master" :new-url="route('categories.create')" :open-url="url('categories/{id}')" :toggle-url="url('categories/{id}/toggle')"
-        search="Search code or name..."
-        :phone-cards="['title' => 'name', 'sub' => 'code', 'meta' => ['items']]"
-        :columns="[
+    <x-dl2::grid id="categories" :config="[
+        'rows' => $rows, 'actions' => 'master', 'activeKey' => 'active', 'newUrl' => route('categories.create'), 'newLabel' => '+ Baru',
+        'openUrl' => url('categories/{id}'), 'toggleUrl' => url('categories/{id}/toggle'),
+        'labels' => ['search' => 'Search code or name...'],
+        'phoneCards' => ['title' => 'name', 'sub' => 'code', 'meta' => ['items']],
+        'columns' => [
             ['key' => 'name', 'label' => 'Category', 'type' => 'identity', 'code' => 'code', 'hue' => 'hue', 'box' => false],
-            ['key' => 'items', 'label' => 'Items using it', 'type' => 'badge', 'toneKey' => 'itemsTone'],
-        ]"
-        :stats="[['label' => 'All categories'], ['label' => 'Inactive', 'where' => ['active' => false], 'tone' => 'warn']]" />
+            ['key' => 'items', 'label' => 'Items using it', 'type' => 'badge', 'tones' => ['0' => 'warning']],
+        ],
+        'stats' => [['label' => 'All categories'], ['label' => 'Inactive', 'where' => ['active' => false], 'tone' => 'warn']],
+    ]" />
     </div>
 @endsection
