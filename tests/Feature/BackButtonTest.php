@@ -26,6 +26,10 @@ class BackButtonTest extends TestCase
     {
         preg_match('/<a[^>]*href="([^"]*)"[^>]*data-f-act="back"|<a[^>]*data-f-act="back"[^>]*href="([^"]*)"/', $html, $m);
 
+        if (($m[1] ?? $m[2] ?? '') === '' && preg_match('/data-dl2-config="([^"]*)"/', $html, $c)) {   // form DevLib 2 (x-dl2::master-form): tautan Kembali dirender JS dari config
+            return json_decode(html_entity_decode($c[1]), true)['back'] ?? null;
+        }
+
         return html_entity_decode($m[1] ?? $m[2] ?? '') ?: null;
     }
 
